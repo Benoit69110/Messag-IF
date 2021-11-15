@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/net_old/client/ClientThread.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/client/ConnectionListener.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/client/JClient.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/multicastclient/ListenerThread.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/multicastclient/MulticastListener.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/server/ClientThread.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/server/ConnectionListener.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/server/JServer.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/net_old/server/ListenerThread.java" charset="windows-1252" />
+  </component>
+</project>
