@@ -9,34 +9,59 @@ package back.server;
 
 import java.io.*;
 import java.net.*;
+import java.util.LinkedList;
 
 public class ServerMultiThreaded {
+	private ServerSocket server;
+	private int port;
+	private LinkedList<Conversation> conversations;
+	private LinkedList<ClientThread> clients;
 
-  
+	public ServerMultiThreaded(){
+	}
+
+	public synchronized void start(int port) {
+		this.port=port;
+		clients=new LinkedList<>();
+		try {
+			server=new ServerSocket(port);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Server ready...");
+	}
+
+	public synchronized void stop() {
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void acceptClient(){
+		try {
+			while(true){
+				Socket clientSocket = server.accept();
+				System.out.println("Connexion from:" + clientSocket.getInetAddress());
+				ClientThread ct=new ClientThread(clientSocket);
+				clients.add(ct);
+				ct.start();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
  	/**
   	* main method
   	* 
   	**/
 	 public static void main(String args[]){
-
-		 ServerSocket listenSocket;
-        
-		 if (args.length != 1) {
-		  	 System.out.println("Usage: java EchoServer <EchoServer port>");
-			 System.exit(1);
-		 }
-		 try {
-			 listenSocket = new ServerSocket(Integer.parseInt(args[0])); //port
-			 System.out.println("Server ready...");
-			 while (true) {
-				 Socket clientSocket = listenSocket.accept();
-				 System.out.println("Connexion from:" + clientSocket.getInetAddress());
-				 ClientThread ct = new ClientThread(clientSocket);
-				 ct.start();
-			 }
-		 } catch (Exception e) {
-			 System.err.println("Error in EchoServer:" + e);
-		 }
+		 ServerMultiThreaded server=new ServerMultiThreaded();
+		 server.start(8084);
+		 server.acceptClient();
 	 }
   }
 
