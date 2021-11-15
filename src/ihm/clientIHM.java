@@ -1,8 +1,7 @@
 package ihm;
 
-import back.Client;
-import gui_old.client.JClientUI;
-import gui_old.widgets.style.CustomColors;
+
+import back.client.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +24,7 @@ public class clientIHM extends JFrame {
     private Client client;
 
     public clientIHM() {
-        client = new Client(); //Recuperer le client du back
+        client = new Client("benoit","localhost",8084); //Recuperer le client du back
 
         // Initialisation de l'IHM
         setTitle("IHM Client");
@@ -137,7 +136,7 @@ public class clientIHM extends JFrame {
 
     }
 
-    public synchronized void write(String msg) {
+    /*public synchronized void write(String msg) {
         synchronized(message) {
             while(msg.endsWith("\n")) {
                 msg = msg.substring(0, msg.length()-1);
@@ -147,7 +146,7 @@ public class clientIHM extends JFrame {
                 //message.setCaretPosition(message.getDocument().getLength());
             }
         }
-    }
+    }*/
 
     public static void main(String[] args) {
         new clientIHM().setVisible(true);
