@@ -11,6 +11,12 @@ public class Conversation {
         this.group=group;
     }
 
+    public void broadcast(String message){
+        for(ClientThread client:group){
+            client.getSocOut().println(message);
+        }
+    }
+
 
 
 }

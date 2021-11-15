@@ -14,15 +14,15 @@ import java.util.LinkedList;
 public class ServerMultiThreaded {
 	private ServerSocket server;
 	private int port;
-	private LinkedList<Conversation> conversations;
+	private Conversation conversation;
 	private LinkedList<ClientThread> clients;
 
-	public ServerMultiThreaded(){
-	}
+	public ServerMultiThreaded(){}
 
 	public synchronized void start(int port) {
 		this.port=port;
 		clients=new LinkedList<>();
+		conversation=new Conversation(0,clients);
 		try {
 			server=new ServerSocket(port);
 		} catch (Exception e) {
@@ -51,6 +51,10 @@ public class ServerMultiThreaded {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void broadcast(String message){
+
 	}
 
 
