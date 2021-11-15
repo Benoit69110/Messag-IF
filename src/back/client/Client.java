@@ -6,9 +6,11 @@
  */
 package back.client;
 
+import back.server.Conversation;
+
 import java.io.*;
 import java.net.*;
-
+import java.util.LinkedList;
 
 
 public class Client {
@@ -19,6 +21,7 @@ public class Client {
     private PrintStream socketOut;
     private BufferedReader stdIn;
     private BufferedReader socketIn;
+    private LinkedList<Conversation> conversation;
 
     public Client(String pseudo,String host,int port){
         if(pseudo=="" || pseudo==null){
@@ -41,10 +44,9 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
             e.printStackTrace();
         }
-
     }
 
-    public void disconnect(){
+    public synchronized void disconnect(){
         try {
             socketOut.close();
             socketIn.close();
@@ -55,6 +57,9 @@ public class Client {
         }
     }
 
+    public void sendMessageTo(int id,String message){
+
+    }
     public void converse(){
 
     }

@@ -11,23 +11,43 @@ import java.io.*;
 import java.net.*;
 
 public class ClientThread extends Thread {
-	
 	private Socket clientSocket;
 	private String pseudo;
-	boolean pseudoSetted=false;
+	private boolean pseudoSetted=false;
+	private BufferedReader socIn;
+	private PrintStream socOut;
 	
 	ClientThread(Socket s) {
 		this.clientSocket = s;
+		try {
+			socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			socOut = new PrintStream(clientSocket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
- 	/**
+	public BufferedReader getSocIn() {
+		return socIn;
+	}
+
+	public void setSocIn(BufferedReader socIn) {
+		this.socIn = socIn;
+	}
+
+	public PrintStream getSocOut() {
+		return socOut;
+	}
+
+	public void setSocOut(PrintStream socOut) {
+		this.socOut = socOut;
+	}
+
+	/**
   	* receives a request from client then sends an echo to the client
   	**/
 	public synchronized void run() {
     	  try {
-			  BufferedReader socIn = null;
-			  socIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-    		  PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
     		  while (true) {
 				  String line = socIn.readLine();
 				  if(!pseudoSetted){
@@ -37,7 +57,6 @@ public class ClientThread extends Thread {
 				  }else{
 					  socOut.println(line);
 				  }
-				  System.out.println("je m'appelle "+pseudo);
 				  socOut.flush();
 			  }
 		  } catch (Exception e) {
