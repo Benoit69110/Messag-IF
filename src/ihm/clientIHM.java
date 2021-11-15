@@ -30,6 +30,8 @@ public class clientIHM extends JFrame {
         setTitle("IHM Client");
         setSize(680, 480);
         //setResizable(false);
+        //setResizable(false);
+
         //setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
