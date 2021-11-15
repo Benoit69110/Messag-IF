@@ -1,10 +1,10 @@
-package gui_old.widgets;
+package ihm.widgets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
-import gui_old.widgets.style.CustomColors;
-import gui_old.widgets.style.CustomFonts;
+import ihm.widgets.style.CustomColors;
+import ihm.widgets.style.CustomFonts;
 
 /**
  * TextArea customis�e.

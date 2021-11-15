@@ -1,6 +1,6 @@
-package gui_old.widgets;
+package ihm.widgets;
 
-import gui_old.widgets.style.CustomColors;
+import ihm.widgets.style.CustomColors;
 
 import java.awt.Dimension;
 

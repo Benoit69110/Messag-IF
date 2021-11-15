@@ -1,7 +1,7 @@
-package gui_old.widgets;
+package ihm.widgets;
 
-import gui_old.widgets.style.CustomColors;
-import gui_old.widgets.style.CustomFonts;
+import ihm.widgets.style.CustomColors;
+import ihm.widgets.style.CustomFonts;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
