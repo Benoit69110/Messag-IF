@@ -1,8 +1,11 @@
 package gui_old.client;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import net_old.client.ConnectionListener;
+import net_old.client.JClient;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,41 +13,27 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-
-import gui_old.widgets.Button;
-import gui_old.widgets.Label;
-import gui_old.widgets.Panel;
-import gui_old.widgets.TextArea;
-import gui_old.widgets.TextField;
-import net_old.client.ConnectionListener;
-import net_old.client.JClient;
-
 /**
  * Interface Graphique pour le client TCP.
  * @author aleconte, rdeclercq
  */
 public class JClientUI extends JFrame implements ConnectionListener {
 	/**Zone d'affichage des messages*/
-	private TextArea msgArea;
+	private JTextArea msgArea;
 	/**Zone de saisie du port du serveur distant*/
-	private TextField serverPort;
+	private JTextField serverPort;
 	/**Zone de saisie de l'adresse IP du serveur distant*/
-	private TextField serverIP;
+	private JTextField serverIP;
 	/**Zone de saisie d'un message*/
-	private TextField msgField;
+	private JTextField msgField;
 	/**Zone de saisie du pseudo*/
-	private TextField pseudoField;
+	private JTextField pseudoField;
 	/**Bouton de connexion / d�connexion au serveur*/
-	private Button connect;
+	private JButton connect;
 	/**Bouton pour effacer la zone d'affichage des messages*/
-	private Button clear;
+	private JButton clear;
 	/**Zone d'affichage des messagesBouton pour envoyer un message*/
-	private Button send;
+	private JButton send;
 	
 	/**Gestionnaire de la connexion TCP avec le serveur*/
 	private JClient client;
@@ -68,35 +57,35 @@ public class JClientUI extends JFrame implements ConnectionListener {
 		}
 		catch (IOException e) {}
 		
-		Panel north = new Panel();
+		JPanel north = new JPanel();
 		north.setLayout(new GridLayout(1, 6, 5, 5));
 		north.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		this.add(north, BorderLayout.NORTH);
-		
-		Panel center = new Panel();
+
+		JPanel center = new JPanel();
 		center.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		center.setLayout(new BorderLayout());
 		this.add(center, BorderLayout.CENTER);
-		
-		Panel south = new Panel();
+
+		JPanel south = new JPanel();
 		south.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		south.setLayout(new BorderLayout());
 		this.add(south, BorderLayout.SOUTH);
 		
 		// Server Port
-		serverPort = new TextField();
+		serverPort = new JTextField();
 		serverPort.setText("50000");
 		north.add(new Label("Server Port :"));
 		north.add(serverPort);
 		
 		// Server IP
-		serverIP = new TextField();
+		serverIP = new JTextField();
 		serverIP.setText("127.0.0.1");
 		north.add(new Label("Server IP :"));
 		north.add(serverIP);
 		
 		// Connect Button
-		connect = new Button("Connect");
+		connect = new JButton("Connect");
 		connect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -126,7 +115,7 @@ public class JClientUI extends JFrame implements ConnectionListener {
 		north.add(connect);
 		
 		// Clear Button
-		clear = new Button("Clear");
+		clear = new JButton("Clear");
 		clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -136,13 +125,13 @@ public class JClientUI extends JFrame implements ConnectionListener {
 		north.add(clear);
 		
 		// Log Area
-		msgArea = new TextArea();
+		msgArea = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(msgArea);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		center.add(scrollPane, BorderLayout.CENTER);
 		
 		// Message Text Field
-		msgField = new TextField();
+		msgField = new JTextField();
 		msgField.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -158,13 +147,13 @@ public class JClientUI extends JFrame implements ConnectionListener {
 		south.add(msgField, BorderLayout.CENTER);
 		
 		// Pseudo Text Field
-		pseudoField = new TextField();
+		pseudoField = new JTextField();
 		pseudoField.setText("Anonymous");
 		pseudoField.setPreferredSize(new Dimension(120, 24));
 		south.add(pseudoField, BorderLayout.WEST);
 		
 		// Send Button
-		send = new Button("Send");
+		send = new JButton("Send");
 		send.setPreferredSize(new Dimension(80, 24));
 		send.addActionListener(new ActionListener() {
 			@Override

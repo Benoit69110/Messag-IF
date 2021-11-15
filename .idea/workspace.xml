@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="" />
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="com0">
+      <change afterPath="$PROJECT_DIR$/src/ihm/clientIHM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_old/client/JClientUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_old/client/JClientUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_old/multicastclient/JMulticastClientUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_old/multicastclient/JMulticastClientUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_old/widgets/style/CustomColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_old/widgets/style/CustomColors.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="20wr0zkYOyBmFLAzPlUImPMECh1" />
@@ -25,7 +36,44 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager" selected="Application.clientIHM">
+    <configuration name="JClientUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-17" />
+      <option name="MAIN_CLASS_NAME" value="gui_old.client.JClientUI" />
+      <module name="Messag-IF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_old.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="clientIHM" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ihm.clientIHM" />
+      <module name="Messag-IF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ihm.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.clientIHM" />
+        <item itemvalue="Application.JClientUI" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -35,7 +83,37 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1636966335158</updated>
+      <workItem from="1636967250239" duration="1068000" />
+      <workItem from="1636968360736" duration="915000" />
+      <workItem from="1636969304760" duration="3759000" />
     </task>
+    <task id="LOCAL-00001" summary="com0">
+      <created>1636968278039</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1636968278039</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="com0" />
+    <option name="LAST_COMMIT_MESSAGE" value="com0" />
   </component>
 </project>
