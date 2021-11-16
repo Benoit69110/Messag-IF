@@ -29,19 +29,20 @@ public class clientIHM extends JFrame {
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
-        //setResizable(false);
-        //setResizable(false);
-
-        //setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel northPanel = new JPanel();
         northPanel.setBackground(new Color(28, 147, 213));
-        northPanel.setLayout(new GridLayout(6, 1, 5, 5));
-        northPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        northPanel.setPreferredSize(new Dimension(100,200));
+        //northPanel.setLayout(new GridLayout(3, 4, 5, 5));
+        //northPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        northPanel.setPreferredSize(new Dimension(160,40));
         this.add(northPanel, BorderLayout.NORTH);
+
+        JPanel westPanel = new JPanel();
+        westPanel.setBackground(new Color(164, 217, 220));
+        westPanel.setPreferredSize(new Dimension(180,100));
+        this.add(westPanel, BorderLayout.WEST);
 
 
         JPanel centerPanel = new JPanel();
@@ -54,43 +55,96 @@ public class clientIHM extends JFrame {
         //northPanel.setBackground(new Color(28, 147, 213));
         southPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         southPanel.setLayout(new BorderLayout());
-        this.add(southPanel, BorderLayout.SOUTH);
+        centerPanel.add(southPanel, BorderLayout.SOUTH);
 
 
         // Server Port
         port = new TextField();
         port.setText("8083");
-        port.setPreferredSize(new Dimension(120, 24));
-        northPanel.add(new Label("Server Port :"));
-        northPanel.add(port);
+        port.setPreferredSize(new Dimension(80, 24));
+        northPanel.add(new Label("Server Port :"), BorderLayout.WEST);
+        northPanel.add(port,BorderLayout.WEST);
         //southPanel.add(pseudoField, BorderLayout.WEST);
+
 
 
         // Server IP
         adresseIP = new TextField();
         adresseIP.setText("127.0.0.1");
+        adresseIP.setPreferredSize(new Dimension(80, 24));
         northPanel.add(new Label("Server IP :"));
         northPanel.add(adresseIP);
 
-        // Connect Button
-        connect = new Button("Connect");
-        connect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //northPanel.setVisible(false);
-            }
-        });
-        northPanel.add(connect);
 
         // Clear Button
         clear = new Button("Clear");
+        clear.setPreferredSize(new Dimension(80,24));
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                message = new TextArea("");
+                adresseIP.setText("");
+                port.setText("");
             }
         });
         northPanel.add(clear);
+
+        // Connect Button
+        connect = new Button("Connect");
+        connect.setPreferredSize(new Dimension(80,24));
+        connect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                northPanel.setVisible(false);
+                JButton change = new JButton("Change Port/Server IP");
+                JButton disconnect = new JButton("Disconnect");
+                westPanel.add(change);
+                change.addActionListener(
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                northPanel.setVisible(true);
+                                change.setVisible(false);
+                                disconnect.setVisible(false);
+                            }
+                        }
+                );
+                westPanel.add(disconnect);
+                disconnect.addActionListener(
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                northPanel.setVisible(true);
+                                change.setVisible(false);
+                                disconnect.setVisible(false);
+
+                            }
+                        }
+                );
+                //Connection
+                /*if(!client.isConnected() && connect.getText().equals("Connect") && !pseudoField.getText().isEmpty()) {
+                    try {
+                        client.connect(serverIP.getText(), Integer.valueOf(serverPort.getText()), pseudoField.getText());
+                        write("Connected to " + serverIP.getText() + " on port " + Integer.valueOf(serverPort.getText()));
+                        connect.setText("Disconnect");
+                        serverIP.setEditable(false);
+                        serverPort.setEditable(false);
+                        pseudoField.setEditable(false);
+                        msgField.requestFocusInWindow();
+                    } catch (IOException ex) {
+                        write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
+                    } catch (NumberFormatException ex) {
+                        write("Error : you must provide a correct ip address and port...");
+                    }
+                } else if(client.isConnected() && connect.getText().equals("Disconnect")) {
+                    client.disconnect();
+                    connect.setText("Connect");
+                    adresseIP.setEditable(true);
+                    port.setEditable(true);
+                    pseudoField.setEditable(true);
+                }*/
+            }
+        });
+        northPanel.add(connect);
 
         // Log Area
         /*
@@ -105,8 +159,8 @@ public class clientIHM extends JFrame {
         messageField.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 /*if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if(client.isConnected() && !msgField.getText().isEmpty()) {
-                        client.sendMessage(msgField.getText());
+                    if(client.isConnected() && !messageField.getText().isEmpty()) {
+                        client.sendMessage(messageField.getText());
                         msgField.setText("");
                     }
                 }*/
@@ -138,7 +192,7 @@ public class clientIHM extends JFrame {
 
     }
 
-    /*public synchronized void write(String msg) {
+    public synchronized void write(String msg) {
         synchronized(message) {
             while(msg.endsWith("\n")) {
                 msg = msg.substring(0, msg.length()-1);
@@ -148,7 +202,7 @@ public class clientIHM extends JFrame {
                 //message.setCaretPosition(message.getDocument().getLength());
             }
         }
-    }*/
+    }
 
     public static void main(String[] args) {
         new clientIHM().setVisible(true);
