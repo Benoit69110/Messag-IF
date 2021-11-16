@@ -36,12 +36,11 @@ public class ClientThread extends Thread {
 
 			//Récupération de l'adresse IP du socket connecté
 			String IP=clientSocket.getRemoteSocketAddress().toString();
-			System.out.println("connexion du client IP : "+IP);
+			System.out.println("Connexion du client IP : "+IP);
 
 			//Boucle infinie pour recevoir et renvoyer les informations
-			boolean loop=true;
-			while(loop){
-				String line=br.readLine();                           //Récupération du message envoyé
+			String line;
+			while((line=br.readLine())!=null){//Récupération du message envoyé
 				if(line instanceof String){
 					if(!pseudoSetted){
 						boolean pseudoExist=false;
@@ -55,21 +54,31 @@ public class ClientThread extends Thread {
 						}else {
 							pseudo = line;
 							pseudoSetted = true;
-							System.out.println(line);
+							System.out.println(pseudo+" has joined the server !");
 							socOut.println("Your pseudo is "+pseudo);
-							server.broadCast(this,pseudo+" join the server !");
+							server.broadcast(this,pseudo+" has joined the server !",false);
+							server.sendHistoric(clientSocket,server.getHistoricFile());
+							server.getConnectedClientsThread().sendConnectedPseudo();
 						}
 					}else {
-						server.broadCast(this,pseudo+" : "+line);
+						server.broadcast(this,pseudo+" : "+line,true);
 					}
 				}
 			}
 		}catch(SocketException e){
-			System.out.println(pseudo+" est parti");
+			System.out.println(pseudo+" has left the server.");
 			server.getClients().remove(this);
+			server.getConnectedClientsThread().sendConnectedPseudo();
 		}catch (Exception e){
-			System.err.println("Error in EchoServer:" + e);
+			System.err.println("Error in Server:" + e);
 		}
+		System.out.println(pseudo+" has left the server.");
+		server.getClients().remove(this);
+		server.getConnectedClientsThread().sendConnectedPseudo();
+	}
+
+	public boolean getPseudoSetted() {
+		return pseudoSetted;
 	}
 
 	public String getPseudo() {

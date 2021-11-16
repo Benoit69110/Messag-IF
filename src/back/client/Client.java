@@ -12,15 +12,17 @@ import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
 
-
 public class Client {
     private String pseudo;
+    private boolean pseudoSetted;
     private Socket socket;
     private int port;
     private String host;
     private PrintStream socketOut;
     private BufferedReader socketIn;
+    private LinkedList<String> pseudosConnected;
     private LinkedList<Conversation> conversation;
+    private ReceiverThread receive;
 
     public Client(String pseudo,String host,int port){
         if(pseudo=="" || pseudo==null){
@@ -28,8 +30,11 @@ public class Client {
         }else{
             this.pseudo=pseudo;
         }
+        this.pseudoSetted=false;
         this.port=port;
         this.host=host;
+        pseudosConnected=new LinkedList<>();
+
     }
 
     public synchronized void connect(){
@@ -45,9 +50,10 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
             e.printStackTrace();
         }
-        ReceiverThread receive=new ReceiverThread(this);
+        receive=new ReceiverThread(this);
         receive.start();
     }
+
     public synchronized void disconnect(){
         try {
             socketOut.close();
@@ -58,24 +64,54 @@ public class Client {
         }
     }
 
-    public void sendMessageTo(int id,String message){
-
+    public void joinConversation(int id){
     }
+
+    public synchronized boolean isConnected(){
+        boolean res= !socket.isClosed() && receive!=null && receive.isRunning();
+        return res;
+    }
+
+    public void displayPseudosConnected(){
+        for(String pseudo:pseudosConnected){
+            System.out.println(pseudo);
+        }
+    }
+
     public void converse(){
-        System.out.println("Write something :");
         try {
             String line;
             boolean lifeClient=true;
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             while (lifeClient) {
                 line=stdIn.readLine();
-                if (line.equals(".")) break;
-                socketOut.println(line);
+
+                if (line.equals("exit")){
+                    break;
+                }else if(line.equals("who is connected")){
+                    displayPseudosConnected();
+                } else if(line.equals("connected")){
+                    System.out.println(isConnected());
+                }else{
+                    socketOut.println(line);
+                }
+
             }
             stdIn.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public LinkedList<String> getPseudosConnected(){
+        return pseudosConnected;
+    }
+
+    public boolean getPseudoSetted() {
+        return pseudoSetted;
+    }
+    public void resetPseudosConnected(){
+        pseudosConnected=new LinkedList<>();
     }
 
     public String getPseudo() {
@@ -84,6 +120,7 @@ public class Client {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+        this.pseudoSetted=true;
     }
 
     public Socket getSocket() {
@@ -94,36 +131,12 @@ public class Client {
         this.socket = socket;
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
     public PrintStream getSocketOut() {
         return socketOut;
     }
 
-    public void setSocketOut(PrintStream socketOut) {
-        this.socketOut = socketOut;
-    }
-
     public BufferedReader getSocketIn() {
         return socketIn;
-    }
-
-    public void setSocketIn(BufferedReader socketIn) {
-        this.socketIn = socketIn;
     }
 
     /**
