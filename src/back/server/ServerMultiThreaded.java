@@ -16,19 +16,21 @@ public class ServerMultiThreaded {
 	private int port;
 	private Conversation conversation;
 	private LinkedList<ClientThread> clients;
+	private PrintWriter out;
 
-	public ServerMultiThreaded(){}
+	public ServerMultiThreaded(){
+		clients=new LinkedList<>();
+	}
 
 	public synchronized void start(int port) {
 		this.port=port;
-		clients=new LinkedList<>();
-		conversation=new Conversation(0,clients);
 		try {
 			server=new ServerSocket(port);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println("Server ready...");
+		acceptClient();
 	}
 
 	public synchronized void stop() {
@@ -40,11 +42,12 @@ public class ServerMultiThreaded {
 	}
 
 	public void acceptClient(){
+		System.out.println("Waiting for connexion...");
 		try {
 			while(true){
 				Socket clientSocket = server.accept();
 				System.out.println("Connexion from:" + clientSocket.getInetAddress());
-				ClientThread ct=new ClientThread(clientSocket);
+				ClientThread ct=new ClientThread(clientSocket,this);
 				clients.add(ct);
 				ct.start();
 			}
@@ -53,8 +56,22 @@ public class ServerMultiThreaded {
 		}
 	}
 
-	public void broadcast(String message){
+	public LinkedList<ClientThread> getClients(){
+		return clients;
+	}
 
+	public void broadCast(ClientThread sender,String msg){
+		try{
+			for(int i=0;i<clients.size();i++){
+				if(clients.get(i)!=sender){
+					out=new PrintWriter(clients.get(i).getClientSocket().getOutputStream(),true);
+					out.println(msg);
+					out.flush();
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 

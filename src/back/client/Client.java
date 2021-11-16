@@ -19,7 +19,6 @@ public class Client {
     private int port;
     private String host;
     private PrintStream socketOut;
-    private BufferedReader stdIn;
     private BufferedReader socketIn;
     private LinkedList<Conversation> conversation;
 
@@ -31,12 +30,14 @@ public class Client {
         }
         this.port=port;
         this.host=host;
+    }
+
+    public synchronized void connect(){
         try {
             socket=new Socket(host,port);
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             socketOut= new PrintStream(socket.getOutputStream());
             socketOut.println(pseudo);
-            stdIn = new BufferedReader(new InputStreamReader(System.in));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
             e.printStackTrace();
@@ -44,13 +45,13 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
             e.printStackTrace();
         }
+        ReceiverThread receive=new ReceiverThread(this);
+        receive.start();
     }
-
     public synchronized void disconnect(){
         try {
             socketOut.close();
             socketIn.close();
-            stdIn.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +62,20 @@ public class Client {
 
     }
     public void converse(){
-
+        System.out.println("Write something :");
+        try {
+            String line;
+            boolean lifeClient=true;
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+            while (lifeClient) {
+                line=stdIn.readLine();
+                if (line.equals(".")) break;
+                socketOut.println(line);
+            }
+            stdIn.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getPseudo() {
@@ -104,14 +118,6 @@ public class Client {
         this.socketOut = socketOut;
     }
 
-    public BufferedReader getStdIn() {
-        return stdIn;
-    }
-
-    public void setStdIn(BufferedReader stdIn) {
-        this.stdIn = stdIn;
-    }
-
     public BufferedReader getSocketIn() {
         return socketIn;
     }
@@ -125,24 +131,10 @@ public class Client {
   *  accepts a connection, receives a message from client then sends an echo to the client
   **/
     public static void main(String[] args) throws IOException {
-
         // creation socket ==> connexion
-        Client client=new Client("benoit","localhost",8084);
-
-
-        System.out.println("Write something :");
-        String line;
-        boolean lifeClient=true;
-        while (lifeClient) {
-        	line=client.getStdIn().readLine();
-        	if (line.equals(".")) break;
-        	client.getSocketOut().println(line);
-            String response=client.getSocketIn().readLine();
-            if(response.equals("See you soon...")){
-                lifeClient=false;
-            }
-        	System.out.println("echo: " + response);
-        }
+        Client client=new Client("greg","localhost",8084);
+        client.connect();
+        client.converse();
         client.disconnect();
     }
 }
