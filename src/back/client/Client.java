@@ -24,7 +24,11 @@ public class Client {
     private LinkedList<Conversation> conversation;
     private ReceiverThread receive;
 
-    public Client(String pseudo,String host,int port){
+    public Client(){
+        pseudosConnected=new LinkedList<>();
+    }
+
+    public synchronized void connect(String pseudo,String host,int port){
         if(pseudo=="" || pseudo==null){
             this.pseudo="Anonymous";
         }else{
@@ -33,11 +37,7 @@ public class Client {
         this.pseudoSetted=false;
         this.port=port;
         this.host=host;
-        pseudosConnected=new LinkedList<>();
 
-    }
-
-    public synchronized void connect(){
         try {
             socket=new Socket(host,port);
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -145,8 +145,8 @@ public class Client {
   **/
     public static void main(String[] args) throws IOException {
         // creation socket ==> connexion
-        Client client=new Client("greg","localhost",8084);
-        client.connect();
+        Client client=new Client();
+        client.connect("greg","localhost",8084);
         client.converse();
         client.disconnect();
     }
