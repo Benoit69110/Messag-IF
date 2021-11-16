@@ -24,8 +24,7 @@ public class clientIHM extends JFrame {
     private Client client;
 
     public clientIHM() {
-        client = new Client("benoit","localhost",8084); //Recuperer le client du back
-
+        client = new Client(); //Recuperer le client du back
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
@@ -121,35 +120,36 @@ public class clientIHM extends JFrame {
                         }
                 );
                 //Connection
-                /*if(!client.isConnected() && connect.getText().equals("Connect") && !pseudoField.getText().isEmpty()) {
+                //if(!client.isConnected() && connect.getText().equals("Connect") && !pseudoField.getText().isEmpty()) {
                     try {
-                        client.connect(serverIP.getText(), Integer.valueOf(serverPort.getText()), pseudoField.getText());
-                        write("Connected to " + serverIP.getText() + " on port " + Integer.valueOf(serverPort.getText()));
-                        connect.setText("Disconnect");
-                        serverIP.setEditable(false);
-                        serverPort.setEditable(false);
+                        //client.connect(adresseIP.getText(), Integer.valueOf(port.getText()), pseudoField.getText());
+                        //client.connect();
+                        write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
+                        //connect.setText("Disconnect");
+                        adresseIP.setEditable(false);
+                        port.setEditable(false);
                         pseudoField.setEditable(false);
-                        msgField.requestFocusInWindow();
-                    } catch (IOException ex) {
+                        messageField.requestFocusInWindow();
+                    //} catch (IOException ex) {
                         write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
                     } catch (NumberFormatException ex) {
                         write("Error : you must provide a correct ip address and port...");
                     }
-                } else if(client.isConnected() && connect.getText().equals("Disconnect")) {
-                    client.disconnect();
-                    connect.setText("Connect");
+                //} else if(client.isConnected() && connect.getText().equals("Disconnect")) {
+                    //client.disconnect();
+                    //connect.setText("Connect");
                     adresseIP.setEditable(true);
                     port.setEditable(true);
                     pseudoField.setEditable(true);
-                }*/
+                //}
             }
         });
         northPanel.add(connect);
 
         // Log Area
-        /*
+
         message = new TextArea();
-        JScrollPane scrollPane = new JScrollPane(message);
+        /*JScrollPane scrollPane = new JScrollPane(message);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
          */
