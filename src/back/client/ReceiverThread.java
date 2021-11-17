@@ -6,15 +6,17 @@ import java.io.IOException;
 public class ReceiverThread extends Thread{
     private BufferedReader socketIn;
     private Client client;
+    private ConnectionListener listener;
     private boolean pseudoSetted=false;
     private boolean running=false;
 
     private final String BEGIN_RECEIVE_PSEUDOS="Clients connected (start)";
     private final String END_RECEIVE_PSEUDOS="Clients connected (end)";
 
-    public ReceiverThread(Client client){
+    public ReceiverThread(Client client, ConnectionListener conL){
         this.client=client;
         this.socketIn=client.getSocketIn();
+        this.listener = conL;
     }
 
     public boolean isRunning(){
@@ -26,7 +28,7 @@ public class ReceiverThread extends Thread{
         try {
             String msg;
             boolean receivePseudosConnected=false;
-            while((msg = socketIn.readLine()) != null) {
+            while(socketIn!=null &&(msg = socketIn.readLine()) != null) {
                 if(!client.getPseudoSetted()){
                     if(msg.substring(0,14).equals("Your pseudo is")) {
                         client.setPseudo(msg.substring(15));
@@ -39,6 +41,7 @@ public class ReceiverThread extends Thread{
 
                 if(!receivePseudosConnected){
                     System.out.println(msg);
+                    listener.onReceiveMessage(msg);
                 }else if(!msg.equals(BEGIN_RECEIVE_PSEUDOS) && !msg.equals(END_RECEIVE_PSEUDOS)){
                     client.getPseudosConnected().add(msg);
                 }
@@ -47,6 +50,7 @@ public class ReceiverThread extends Thread{
                     receivePseudosConnected=false;
                 }
             }
+            listener.onConnectionLost("Connection lost...");
         } catch (IOException e) {
             System.out.println("You have been disconnected");
             client.disconnect();

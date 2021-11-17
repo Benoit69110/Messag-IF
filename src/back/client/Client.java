@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
 
-public class Client {
+public class Client implements ConnectionListener{
     private String pseudo;
     private boolean pseudoSetted;
     private Socket socket;
@@ -23,9 +23,11 @@ public class Client {
     private LinkedList<String> pseudosConnected;
     private LinkedList<Conversation> conversation;
     private ReceiverThread receive;
+    private ConnectionListener conL;
 
-    public Client(){
+    public Client(ConnectionListener cL){
         pseudosConnected=new LinkedList<>();
+        this.conL = cL;
     }
 
     public synchronized void connect(String pseudo,String host,int port){
@@ -42,7 +44,8 @@ public class Client {
             socket=new Socket(host,port);
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             socketOut= new PrintStream(socket.getOutputStream());
-            socketOut.println(pseudo);
+            //socketOut.println(pseudo);
+
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
             e.printStackTrace();
@@ -50,8 +53,20 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
             e.printStackTrace();
         }
-        receive=new ReceiverThread(this);
+        receive=new ReceiverThread(this, conL);
         receive.start();
+    }
+    @Override
+    public void onReceiveMessage(String msg) {
+        conL.onReceiveMessage(msg);
+    }
+
+    @Override
+    public void onConnectionLost(String msg) {
+        try {
+            socket.close();
+        } catch(Exception e) {}
+        conL.onConnectionLost(msg);
     }
 
     public synchronized void disconnect(){
@@ -68,7 +83,8 @@ public class Client {
     }
 
     public synchronized boolean isConnected(){
-        boolean res= !socket.isClosed() && receive!=null && receive.isRunning();
+        boolean res= socket!=null && !socket.isClosed() && receive!=null
+                && receive.isRunning();
         return res;
     }
 
@@ -102,6 +118,11 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public void converseClient(String mess){
+        socketOut.println(mess);
+    }
+
 
     public LinkedList<String> getPseudosConnected(){
         return pseudosConnected;
@@ -140,15 +161,16 @@ public class Client {
     }
 
     /**
-  *  main method
-  *  accepts a connection, receives a message from client then sends an echo to the client
-  **/
+     *  main method
+     *  accepts a connection, receives a message from client then sends an echo to the client
+     **/
     public static void main(String[] args) throws IOException {
         // creation socket ==> connexion
-        Client client=new Client();
-        client.connect("greg","localhost",8084);
-        client.converse();
-        client.disconnect();
+        //Client client=new Client(conL);
+        //client.connect("greg","localhost",8084);
+        //client.converse();
+        //client.converseClient("wesh");
+        //client.disconnect();
     }
 }
 

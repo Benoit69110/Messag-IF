@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix clientIHM">
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix1 clientIHM">
+      <change afterPath="$PROJECT_DIR$/src/back/client/ConnectionListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/back/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ihm/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/clientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,9 +39,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/4IF/Programmation réseaux/PackParrain/tp-sockets" />
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.clientIHM">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="back.client.Client" />
       <module name="Messag-IF" />
@@ -65,6 +69,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ServerIhm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ihm.server.ServerIhm" />
+      <module name="Messag-IF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ihm.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerMultiThreaded" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="back.server.ServerMultiThreaded" />
+      <module name="Messag-IF" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="back.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="clientIHM" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ihm.clientIHM" />
       <module name="Messag-IF" />
@@ -80,8 +110,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client" />
         <item itemvalue="Application.clientIHM" />
+        <item itemvalue="Application.Client" />
+        <item itemvalue="Application.ServerIhm" />
+        <item itemvalue="Application.ServerMultiThreaded" />
         <item itemvalue="Application.JClientUI" />
       </list>
     </recent_temporary>
@@ -97,7 +129,7 @@
       <workItem from="1636967250239" duration="1068000" />
       <workItem from="1636968360736" duration="915000" />
       <workItem from="1636969304760" duration="4282000" />
-      <workItem from="1637092983609" duration="7298000" />
+      <workItem from="1637092983609" duration="28499000" />
     </task>
     <task id="LOCAL-00001" summary="com0">
       <created>1636968278039</created>
@@ -120,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637098710666</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix1 clientIHM">
+      <created>1637100586463</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1637100586463</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -142,6 +181,7 @@
     <MESSAGE value="com0" />
     <MESSAGE value="clientIHM" />
     <MESSAGE value="Fix clientIHM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix clientIHM" />
+    <MESSAGE value="Fix1 clientIHM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix1 clientIHM" />
   </component>
 </project>

@@ -2,6 +2,8 @@ package ihm;
 
 
 import back.client.Client;
+import back.client.ConnectionListener;
+import back.server.ServerMultiThreaded;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.io.PrintStream;
 
-public class clientIHM extends JFrame {
-    private TextArea message;
+public class clientIHM extends JFrame implements ConnectionListener {
+    private JTextArea message;
     private TextField messageField;
     private TextField port;
     private TextField adresseIP;
@@ -24,7 +27,7 @@ public class clientIHM extends JFrame {
     private Client client;
 
     public clientIHM() {
-        client = new Client(); //Recuperer le client du back
+        client = new Client(this); //Recuperer le client du back
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
@@ -57,9 +60,17 @@ public class clientIHM extends JFrame {
         centerPanel.add(southPanel, BorderLayout.SOUTH);
 
 
+        JPanel conversationPanel = new JPanel();
+        //northPanel.setBackground(new Color(28, 147, 213));
+        //conversationPanel.setLayout(new GridLayout(1, 1, 5, 5));
+
+        //conversationPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+        //conversationPanel.setLayout(new BorderLayout());
+        centerPanel.add(conversationPanel);
+
         // Server Port
         port = new TextField();
-        port.setText("8083");
+        port.setText("8084");
         port.setPreferredSize(new Dimension(80, 24));
         northPanel.add(new Label("Server Port :"), BorderLayout.WEST);
         northPanel.add(port,BorderLayout.WEST);
@@ -112,6 +123,7 @@ public class clientIHM extends JFrame {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                client.disconnect();
                                 northPanel.setVisible(true);
                                 change.setVisible(false);
                                 disconnect.setVisible(false);
@@ -120,50 +132,72 @@ public class clientIHM extends JFrame {
                         }
                 );
                 //Connection
-                //if(!client.isConnected() && connect.getText().equals("Connect") && !pseudoField.getText().isEmpty()) {
+                if(!client.isConnected()&& !pseudoField.getText().isEmpty()) { //Connect
                     try {
-                        //client.connect(adresseIP.getText(), Integer.valueOf(port.getText()), pseudoField.getText());
-                        //client.connect();
+                        client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
+
+
                         write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
+                        write(" ");
+                        write("WELCOME TO THE GROUP CHAT");
+                        write(" ");
+                        client.getSocketOut().println(client.getPseudo());
+
+                        //write(client.getSocketOut().toString());
+                        //client.converseClient(messageField.getText());
+                        //client.getSocketOut().println();
+                        //System.out.println(client.getSocket());
+                        //write(client.getSocketOut());
                         //connect.setText("Disconnect");
-                        adresseIP.setEditable(false);
-                        port.setEditable(false);
-                        pseudoField.setEditable(false);
+                        //adresseIP.setEditable(false);
+                        //port.setEditable(false);
+                        //pseudoField.setEditable(false);
                         messageField.requestFocusInWindow();
                     //} catch (IOException ex) {
-                        write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
+                        //write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
                     } catch (NumberFormatException ex) {
                         write("Error : you must provide a correct ip address and port...");
                     }
-                //} else if(client.isConnected() && connect.getText().equals("Disconnect")) {
-                    //client.disconnect();
+                } else if(client.isConnected()) { //Deconnect
+                    client.disconnect();
                     //connect.setText("Connect");
-                    adresseIP.setEditable(true);
-                    port.setEditable(true);
-                    pseudoField.setEditable(true);
-                //}
+                    //adresseIP.setEditable(true);
+                    //port.setEditable(true);
+                    //pseudoField.setEditable(true);
+                }
             }
         });
         northPanel.add(connect);
 
         // Log Area
 
-        message = new TextArea();
-        /*JScrollPane scrollPane = new JScrollPane(message);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        message = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(message);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-         */
+
 
         // Message Text Field
-        messageField = new TextField();
+        messageField = new TextField("");
+        JTextArea text = new JTextArea();
         messageField.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
-                /*if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(client.isConnected() && !messageField.getText().isEmpty()) {
-                        client.sendMessage(messageField.getText());
-                        msgField.setText("");
+                        //System.out.println(messageField.getText());
+                        write(pseudoField.getText()+": "+messageField.getText());
+                        //client.converseClient(messageField.getText());
+                        //client.converseClient(messageField.getText());
+
+                        //client.converse(messageField.getText());
+
+                        //centerPanel.add(new JTextArea(pseudoField.getText() +" : " + messageField.getText()));
+                        //client.converse();
+                        //text.setText(messageField.getText());
+                        //conversationPanel.add(text);
+                        messageField.setText("");
                     }
-                }*/
+                }
             }
             public void keyTyped(KeyEvent e) {}
             public void keyReleased(KeyEvent e) {}
@@ -182,14 +216,29 @@ public class clientIHM extends JFrame {
         send.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*if(client.isConnected() && !msgField.getText().isEmpty()) {
-                    client.sendMessage(msgField.getText());
-                    msgField.setText("");
-                }*/
+                if(client.isConnected() && !messageField.getText().isEmpty()) {
+                    write(pseudoField.getText()+": "+messageField.getText());
+                    //client.converseClient(messageField.getText());
+
+                    //client.converseClient(messageField.getText());
+                    //System.out.println(pseudoField.getText() +" : " + messageField.getText());
+                    //client.sendMessage(messageField.getText());
+                    messageField.setText("");
+                }
             }
         });
         southPanel.add(send, BorderLayout.EAST);
 
+    }
+
+    @Override
+    public void onReceiveMessage(String msg) {
+        write(msg);
+    }
+
+    @Override
+    public void onConnectionLost(String msg) {
+        write(msg);
     }
 
     public synchronized void write(String msg) {
@@ -199,10 +248,11 @@ public class clientIHM extends JFrame {
             }
             if(!msg.isEmpty()) {
                 message.append(msg + "\n");
-                //message.setCaretPosition(message.getDocument().getLength());
+                message.setCaretPosition(message.getDocument().getLength());
             }
         }
     }
+
 
     public static void main(String[] args) {
         new clientIHM().setVisible(true);
