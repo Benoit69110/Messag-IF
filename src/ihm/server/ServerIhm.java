@@ -41,10 +41,8 @@ public class ServerIhm extends JFrame implements ConnectionListener{
      */
     private Button clearHistory;
 
-    ServerMultiThreaded server = new ServerMultiThreaded();
-
     public ServerIhm() {
-
+        ServerMultiThreaded server = new ServerMultiThreaded(this);
         // Initialisation de l'IHM
         setTitle("JServerUI - INSA de Lyon");
         setSize(560, 420);

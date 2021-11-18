@@ -6,11 +6,13 @@
  */
 package back.client;
 
+import back.server.ClientThread;
 import back.server.Conversation;
 
 import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 public class Client implements ConnectionListener{
     private String pseudo;
@@ -44,8 +46,7 @@ public class Client implements ConnectionListener{
             socket=new Socket(host,port);
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             socketOut= new PrintStream(socket.getOutputStream());
-            //socketOut.println(pseudo);
-
+            socketOut.println(pseudo);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
             e.printStackTrace();
@@ -113,9 +114,18 @@ public class Client implements ConnectionListener{
                 } else if(line.equals("connected")){
                     System.out.println(isConnected());
                 }else{
-                    socketOut.println(line);
+                    StringTokenizer tokens=new StringTokenizer(line);
+                    if(tokens.countTokens()>2 && tokens.nextToken().equals("private")) {
+                        String sendTo = tokens.nextToken();
+                        String msg = "";
+                        while (tokens.hasMoreTokens()) {
+                            msg += tokens.nextToken() + " ";
+                        }
+                        converseWith(sendTo,msg);
+                    }else{
+                        socketOut.println(line);
+                    }
                 }
-
             }
             stdIn.close();
         } catch (IOException e) {
@@ -127,6 +137,9 @@ public class Client implements ConnectionListener{
         socketOut.println(mess);
     }
 
+    public void converseWith(String pseudoDest,String message){
+        socketOut.println("private "+pseudoDest+" "+message);
+    }
 
     public LinkedList<String> getPseudosConnected(){
         return pseudosConnected;
@@ -171,10 +184,14 @@ public class Client implements ConnectionListener{
     public static void main(String[] args) throws IOException {
         // creation socket ==> connexion
         //Client client=new Client(conL);
-        //client.connect("greg","localhost",8084);
-        //client.converse();
+        Client client=new Client(new ConnectionListener() {
+            public void onReceiveMessage(String msg) {}
+            public void onConnectionLost(String msg) {}
+        });
+        client.connect("greg","localhost",8084);
+        client.converse();
         //client.converseClient("wesh");
-        //client.disconnect();
+        client.disconnect();
     }
 }
 

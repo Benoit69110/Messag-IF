@@ -29,8 +29,8 @@ public class ReceiverThread extends Thread{
             String msg;
             boolean receivePseudosConnected=false;
             while(socketIn!=null &&(msg = socketIn.readLine()) != null) {
-                if(!client.getPseudoSetted()){
-                    if(msg.substring(0,14).equals("Your pseudo is")) {
+                if(!client.getPseudoSetted()) {
+                    if (msg.contains("Your pseudo is")) {
                         client.setPseudo(msg.substring(15));
                     }
                 }
@@ -49,13 +49,14 @@ public class ReceiverThread extends Thread{
                 if(msg.equals(END_RECEIVE_PSEUDOS)){
                     receivePseudosConnected=false;
                 }
+
             }
             listener.onConnectionLost("Connection lost...");
         } catch (IOException e) {
             System.out.println("You have been disconnected");
             client.disconnect();
             running=false;
-            System.exit(1);
+            //System.exit(1);
         }
         running=false;
     }
