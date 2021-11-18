@@ -45,12 +45,14 @@ public class ClientThread extends Thread {
 					if(!pseudoSetted){
 						boolean pseudoExist=false;
 						for(ClientThread client:server.getClients()){
-							if(client!=this && client.getPseudo().equals(line)){
+							if(client!=this && client.getPseudo().equals("Anonymous")
+									&&client.getPseudo().equals(line)){
+								System.out.println(client.getPseudo());
 								pseudoExist=true;
 							}
 						}
 						if(pseudoExist){
-							socOut.println("This pseudo is already used. Choose another one :");
+							socOut.println("This pseudo is already used. Choose another one below.");
 						}else {
 							pseudo = line;
 							pseudoSetted = true;

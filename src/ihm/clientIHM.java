@@ -36,8 +36,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
         JPanel northPanel = new JPanel();
         northPanel.setBackground(new Color(28, 147, 213));
-        //northPanel.setLayout(new GridLayout(3, 4, 5, 5));
-        //northPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         northPanel.setPreferredSize(new Dimension(160,40));
         this.add(northPanel, BorderLayout.NORTH);
 
@@ -170,7 +168,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
         northPanel.add(connect);
 
         // Log Area
-
         message = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(message);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -184,17 +181,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(client.isConnected() && !messageField.getText().isEmpty()) {
-                        //System.out.println(messageField.getText());
-                        write(pseudoField.getText()+": "+messageField.getText());
-                        //client.converseClient(messageField.getText());
-                        //client.converseClient(messageField.getText());
-
-                        //client.converse(messageField.getText());
-
-                        //centerPanel.add(new JTextArea(pseudoField.getText() +" : " + messageField.getText()));
-                        //client.converse();
-                        //text.setText(messageField.getText());
-                        //conversationPanel.add(text);
+                        client.addMessage(messageField.getText());
                         messageField.setText("");
                     }
                 }
@@ -217,12 +204,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(client.isConnected() && !messageField.getText().isEmpty()) {
-                    write(pseudoField.getText()+": "+messageField.getText());
-                    //client.converseClient(messageField.getText());
-
-                    //client.converseClient(messageField.getText());
-                    //System.out.println(pseudoField.getText() +" : " + messageField.getText());
-                    //client.sendMessage(messageField.getText());
+                    client.addMessage(messageField.getText());
                     messageField.setText("");
                 }
             }
@@ -255,7 +237,10 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
 
     public static void main(String[] args) {
+
         new clientIHM().setVisible(true);
+        new clientIHM().setVisible(true);
+
     }
 
 

@@ -69,6 +69,10 @@ public class Client implements ConnectionListener{
         conL.onConnectionLost(msg);
     }
 
+    public synchronized void addMessage(String message){
+        if(socket!=null && isConnected())
+            socketOut.println(message);
+    }
     public synchronized void disconnect(){
         try {
             socketOut.close();
