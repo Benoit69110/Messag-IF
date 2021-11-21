@@ -10,7 +10,6 @@ package back.server;
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class ClientThread extends Thread {
@@ -48,13 +47,14 @@ public class ClientThread extends Thread {
 			String line;
 			while((line=br.readLine())!=null){//Récupération du message envoyé
 				if(line instanceof String){
+					line=server.decrypt(line);
 					if(!pseudoSetted){
 						if(pseudoExist(line)){
-							socOut.println("This pseudo is already used. Choose another one below.");
+							socOut.println(server.encrypt("This pseudo is already used. Choose another one below."));
 						}else {
 							pseudo = line;
 							pseudoSetted = true;
-							socOut.println("Your pseudo is "+pseudo);
+							socOut.println(server.encrypt("Your pseudo is "+pseudo));
 							server.onClientAccepted(this);
 						}
 					}else{
@@ -85,6 +85,7 @@ public class ClientThread extends Thread {
 			}
 		}catch (Exception e){
 			System.err.println("Error in Server:" + e);
+			// e.printStackTrace();
 		}
 		server.onClientDisconnected(this);
 	}
@@ -94,7 +95,6 @@ public class ClientThread extends Thread {
 		for(ClientThread client:server.getClients()){
 			if(client.getPseudo()!=null && client!=this && /*client.getPseudo().equals("Anonymous")
 					&&*/ client.getPseudo().equals(pseudo)){
-				System.out.println(client.getPseudo());
 				pseudoExist=true;
 			}
 		}

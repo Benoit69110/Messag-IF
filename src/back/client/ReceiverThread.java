@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class ReceiverThread extends Thread{
     private BufferedReader socketIn;
+    private BufferedReader socketInEncrypted;
     private Client client;
     private ConnectionListener listener;
     private boolean pseudoSetted=false;
@@ -29,6 +30,7 @@ public class ReceiverThread extends Thread{
             String msg;
             boolean receivePseudosConnected=false;
             while(socketIn!=null &&(msg = socketIn.readLine()) != null) {
+                msg=client.decrypt(msg);
                 if(!client.getPseudoSetted()) {
                     if (msg.contains("Your pseudo is")) {
                         client.setPseudo(msg.substring(15));
