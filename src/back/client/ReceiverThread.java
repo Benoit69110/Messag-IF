@@ -42,8 +42,13 @@ public class ReceiverThread extends Thread{
                 }
 
                 if(!receivePseudosConnected){
+                    String privateMsg=msg.split(" ")[0];
+                    if(privateMsg.equals("private")){
+                        listener.onReceivePrivateMessage(msg);
+                    }else{
+                        listener.onReceiveMessage(msg);
+                    }
                     System.out.println(msg);
-                    listener.onReceiveMessage(msg);
                 }else if(!msg.equals(BEGIN_RECEIVE_PSEUDOS) && !msg.equals(END_RECEIVE_PSEUDOS)){
                     client.getPseudosConnected().add(msg);
                 }

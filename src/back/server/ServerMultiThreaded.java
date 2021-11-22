@@ -157,10 +157,10 @@ public class ServerMultiThreaded implements ConnectionListener{
 				}
 			}
 			out=new PrintWriter(dest.getClientSocket().getOutputStream(),true);
-			out.println(encrypt(msg));
+			out.println(encrypt("private "+msg));
 			out.flush();
 			out=new PrintWriter(sender.getClientSocket().getOutputStream(),true);
-			out.println(encrypt(msg));
+			out.println(encrypt("private "+msg));
 			out.flush();
 		}catch(IOException e){
 			e.printStackTrace();
