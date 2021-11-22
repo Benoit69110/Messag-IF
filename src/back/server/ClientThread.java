@@ -9,6 +9,8 @@ package back.server;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class ClientThread extends Thread {
 	private Socket clientSocket;
@@ -17,8 +19,11 @@ public class ClientThread extends Thread {
 	private BufferedReader socIn;
 	private PrintStream socOut;
 	private ServerMultiThreaded server;
+	private HashMap<String,Boolean> firstPrivateMessage;
+	private String PATH_LOGS="logs/";
 	
 	ClientThread(Socket s,ServerMultiThreaded server) {
+		firstPrivateMessage=new HashMap<>();
 		this.clientSocket = s;
 		this.server=server;
 		try {
@@ -42,41 +47,62 @@ public class ClientThread extends Thread {
 			String line;
 			while((line=br.readLine())!=null){//Récupération du message envoyé
 				if(line instanceof String){
+					line=server.decrypt(line);
 					if(!pseudoSetted){
-						boolean pseudoExist=false;
-						for(ClientThread client:server.getClients()){
-							if(client!=this && client.getPseudo().equals("Anonymous")
-									&&client.getPseudo().equals(line)){
-								System.out.println(client.getPseudo());
-								pseudoExist=true;
-							}
-						}
-						if(pseudoExist){
-							socOut.println("This pseudo is already used. Choose another one below.");
+						if(pseudoExist(line)){
+							socOut.println(server.encrypt("This pseudo is already used. Choose another one below."));
 						}else {
 							pseudo = line;
 							pseudoSetted = true;
-							System.out.println(pseudo+" has joined the server !");
-							socOut.println("Your pseudo is "+pseudo);
-							server.broadcast(this,pseudo+" has joined the server !",false);
-							server.sendHistoric(clientSocket,server.getHistoricFile());
-							server.getConnectedClientsThread().sendConnectedPseudo();
+							socOut.println(server.encrypt("Your pseudo is "+pseudo));
+							server.onClientAccepted(this);
 						}
-					}else {
-						server.broadcast(this,pseudo+" : "+line,true);
+					}else{
+						StringTokenizer tokens=new StringTokenizer(line);
+						if(tokens.countTokens()>2 && tokens.nextToken().equals("private")){
+							String sendTo=tokens.nextToken();
+							if(pseudoExist(sendTo)){
+								/*if(firstPrivateMessage.get(sendTo)){
+									String senderPseudo= pseudo;
+									File convFile=new File(PATH_LOGS+senderPseudo+sendTo+".txt");
+									if(convFile.exists()){
+									}else{
+										convFile=new File(PATH_LOGS+sendTo+senderPseudo+".txt");
+									}
+								}*/
+								ClientThread clientDest= server.getClientByPseudo(sendTo);
+								String msg="";
+								while(tokens.hasMoreTokens()){
+									msg+=tokens.nextToken()+" ";
+								}
+								server.broadcastTo(this,clientDest,pseudo+" : "+msg,true);
+							}
+						}else{
+							server.broadcast(this,pseudo+" : "+line,true,server.getHistoricFile());
+						}
 					}
 				}
 			}
-		}catch(SocketException e){
-			System.out.println(pseudo+" has left the server.");
-			server.getClients().remove(this);
-			server.getConnectedClientsThread().sendConnectedPseudo();
 		}catch (Exception e){
 			System.err.println("Error in Server:" + e);
+			// e.printStackTrace();
 		}
-		System.out.println(pseudo+" has left the server.");
-		server.getClients().remove(this);
-		server.getConnectedClientsThread().sendConnectedPseudo();
+		server.onClientDisconnected(this);
+	}
+
+	public boolean pseudoExist(String pseudo){
+		boolean pseudoExist=false;
+		for(ClientThread client:server.getClients()){
+			if(client.getPseudo()!=null && client!=this && /*client.getPseudo().equals("Anonymous")
+					&&*/ client.getPseudo().equals(pseudo)){
+				pseudoExist=true;
+			}
+		}
+		return pseudoExist;
+	}
+
+	public HashMap<String,Boolean> getFirstPrivateMessage() {
+		return firstPrivateMessage;
 	}
 
 	public boolean getPseudoSetted() {

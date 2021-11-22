@@ -6,28 +6,52 @@
  */
 package back.client;
 
-import back.server.Conversation;
-
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.*;
+import java.util.Base64;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 public class Client implements ConnectionListener{
+    private static byte[] SECRET_KEY;
+    private static String ALGORITHM;
+    private SecretKeySpec sks;
+
     private String pseudo;
     private boolean pseudoSetted;
     private Socket socket;
     private int port;
     private String host;
-    private PrintStream socketOut;
-    private BufferedReader socketIn;
+    private PrintStream socketOut; // Flux de sortie en clair
+    private BufferedReader socketIn; // Flux d'entrée en clair
     private LinkedList<String> pseudosConnected;
-    private LinkedList<Conversation> conversation;
     private ReceiverThread receive;
     private ConnectionListener conL;
 
     public Client(ConnectionListener cL){
         pseudosConnected=new LinkedList<>();
         this.conL = cL;
+        try{
+            BufferedReader fileReader=new BufferedReader(new FileReader("config/config.txt"));
+            String line;
+            int nbLines=0;
+            while((line=fileReader.readLine())!=null){
+                line=line.split("=")[1];
+                if(nbLines==0){
+                    SECRET_KEY=line.getBytes();
+                }else if(nbLines==1){
+                    ALGORITHM=line;
+                }
+                nbLines++;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        // The key length has to be 16 bytes
+        sks= new SecretKeySpec(SECRET_KEY, ALGORITHM);
+
     }
 
     public synchronized void connect(String pseudo,String host,int port){
@@ -44,8 +68,7 @@ public class Client implements ConnectionListener{
             socket=new Socket(host,port);
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             socketOut= new PrintStream(socket.getOutputStream());
-            //socketOut.println(pseudo);
-
+            socketOut.println(encrypt(pseudo));
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
             e.printStackTrace();
@@ -71,7 +94,7 @@ public class Client implements ConnectionListener{
 
     public synchronized void addMessage(String message){
         if(socket!=null && isConnected())
-            socketOut.println(message);
+            socketOut.println(encrypt(message));
     }
     public synchronized void disconnect(){
         try {
@@ -113,9 +136,18 @@ public class Client implements ConnectionListener{
                 } else if(line.equals("connected")){
                     System.out.println(isConnected());
                 }else{
-                    socketOut.println(line);
+                    StringTokenizer tokens=new StringTokenizer(line);
+                    if(tokens.countTokens()>2 && tokens.nextToken().equals("private")) {
+                        String sendTo = tokens.nextToken();
+                        String msg = "";
+                        while (tokens.hasMoreTokens()) {
+                            msg += tokens.nextToken() + " ";
+                        }
+                        converseWith(sendTo,msg);
+                    }else{
+                        socketOut.println(encrypt(line));
+                    }
                 }
-
             }
             stdIn.close();
         } catch (IOException e) {
@@ -124,9 +156,12 @@ public class Client implements ConnectionListener{
     }
 
     public void converseClient(String mess){
-        socketOut.println(mess);
+        socketOut.println(encrypt(mess));
     }
 
+    public void converseWith(String pseudoDest,String message){
+        socketOut.println(encrypt("private "+pseudoDest+" "+message));
+    }
 
     public LinkedList<String> getPseudosConnected(){
         return pseudosConnected;
@@ -156,12 +191,40 @@ public class Client implements ConnectionListener{
         this.socket = socket;
     }
 
+    public BufferedReader getSocketIn() {
+        return socketIn;
+    }
     public PrintStream getSocketOut() {
         return socketOut;
     }
 
-    public BufferedReader getSocketIn() {
-        return socketIn;
+    public String encrypt(String valueToEncrypt){
+        String res="";
+        try{
+            Cipher c=Cipher.getInstance(ALGORITHM);
+            c.init(Cipher.ENCRYPT_MODE,sks);
+            byte[] encVal=c.doFinal(valueToEncrypt.getBytes());
+            res=new String(Base64.getEncoder().encode(encVal));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    public String decrypt(String encryptedValue){
+        String decr="";
+        try{
+            Cipher c=Cipher.getInstance(ALGORITHM);
+            c.init(Cipher.DECRYPT_MODE,sks);
+            byte[] decryptedVal=Base64.getDecoder().decode(encryptedValue);
+            byte[] decvValue= c.doFinal(decryptedVal);
+            decr=new String(decvValue);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return decr;
     }
 
     /**
@@ -171,10 +234,14 @@ public class Client implements ConnectionListener{
     public static void main(String[] args) throws IOException {
         // creation socket ==> connexion
         //Client client=new Client(conL);
-        //client.connect("greg","localhost",8084);
-        //client.converse();
+        Client client=new Client(new ConnectionListener() {
+            public void onReceiveMessage(String msg) {}
+            public void onConnectionLost(String msg) {}
+        });
+        client.connect("greg","localhost",8084);
+        client.converse();
         //client.converseClient("wesh");
-        //client.disconnect();
+        client.disconnect();
     }
 }
 
