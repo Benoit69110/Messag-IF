@@ -262,6 +262,11 @@ public class clientIHM extends JFrame implements ConnectionListener {
     }
 
     @Override
+    public void onReceivePrivateMessage(String msg) {
+        write(msg);
+    }
+
+    @Override
     public void onConnectionLost(String msg) {
         write(msg);
     }

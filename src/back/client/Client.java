@@ -86,6 +86,11 @@ public class Client implements ConnectionListener{
     }
 
     @Override
+    public void onReceivePrivateMessage(String msg) {
+        conL.onReceivePrivateMessage(msg);
+    }
+
+    @Override
     public void onConnectionLost(String msg) {
         try {
             socket.close();
@@ -235,6 +240,7 @@ public class Client implements ConnectionListener{
         //Client client=new Client(conL);
         Client client=new Client(new ConnectionListener() {
             public void onReceiveMessage(String msg) {}
+            public void onReceivePrivateMessage(String msg) {}
             public void onConnectionLost(String msg) {}
         });
         client.connect("greg","localhost",8084);

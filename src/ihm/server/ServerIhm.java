@@ -1,7 +1,6 @@
 package ihm.server;
 
 import back.server.ClientThread;
-import ihm.widgets.*;
 import back.server.ServerMultiThreaded;
 import ihm.widgets.Button;
 import ihm.widgets.Label;
@@ -16,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import back.server.ConnectionListener;
 
@@ -44,7 +45,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
     public ServerIhm() {
         ServerMultiThreaded server = new ServerMultiThreaded(this);
         // Initialisation de l'IHM
-        setTitle("JServerUI - INSA de Lyon");
+        setTitle("Server - INSA de Lyon");
         setSize(560, 420);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -108,6 +109,16 @@ public class ServerIhm extends JFrame implements ConnectionListener{
             }
         });
         north.add(startServer);
+
+        // Clear historique Button
+        clearHistory = new Button("Clear historique");
+        clearHistory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //server.clearHistory();
+                write("Clear history");
+            }
+        });
+        north.add(clearHistory);
     }
 
     /**
@@ -115,9 +126,9 @@ public class ServerIhm extends JFrame implements ConnectionListener{
      * @param msg Message à écrire dans la zone d'affichage des messages.
      * */
     public synchronized void write(String msg) {
-        logArea.append(msg + "\n");
-        //logArea.setCaretPosition(logArea.getDocument().getLength());
-        System.out.println("writing ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss" );
+        String date = simpleDateFormat.format(new Date());
+        logArea.append("["+date+"]" +msg + "\n");
     }
 
     @Override

@@ -65,7 +65,8 @@ public class ServerMultiThreaded implements ConnectionListener{
 			e.printStackTrace();
 		}
 		System.out.println("Server ready...");
-		acceptClient();
+		ConnectionThread connectionThread=new ConnectionThread(this);
+		connectionThread.acceptConnection();
 	}
 
 	public synchronized void stop() {
@@ -91,6 +92,18 @@ public class ServerMultiThreaded implements ConnectionListener{
 			e.printStackTrace();
 		}
 	}
+	public void clearHistoric(File historic){
+		if(historic.exists()){
+			try {
+				FileWriter myWriter=new FileWriter(historic);
+				myWriter.write("");
+				myWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void addClientToFirstPrivateMessage(ClientThread newClient){
 		for(ClientThread client:clients){
 			if(client!=newClient){
@@ -144,10 +157,10 @@ public class ServerMultiThreaded implements ConnectionListener{
 				}
 			}
 			out=new PrintWriter(dest.getClientSocket().getOutputStream(),true);
-			out.println(encrypt(msg));
+			out.println(encrypt("private "+msg));
 			out.flush();
 			out=new PrintWriter(sender.getClientSocket().getOutputStream(),true);
-			out.println(encrypt(msg));
+			out.println(encrypt("private "+msg));
 			out.flush();
 		}catch(IOException e){
 			e.printStackTrace();
@@ -271,7 +284,8 @@ public class ServerMultiThreaded implements ConnectionListener{
 			 public void acknowledge(String report) {}
 		 });
 		 server.start(8084);
-		 server.acceptClient();
+		 server.stop();
+		 server.clearHistoric(new File("logs/serverLogs.txt"));
 	 }
 
 

@@ -16,4 +16,6 @@ public interface ConnectionListener {
      * @param msg Message de déconnexion.
      * */
     public void onConnectionLost(String msg);
+
+    public void onReceivePrivateMessage(String msg);
 }
