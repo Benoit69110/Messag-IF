@@ -25,9 +25,11 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private Button send;
 
     private Client client;
+    private ServerMultiThreaded serverMultiThreaded;
 
     public clientIHM() {
         client = new Client(this); //Recuperer le client du back
+        serverMultiThreaded = new ServerMultiThreaded();
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
@@ -58,22 +60,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
         centerPanel.add(southPanel, BorderLayout.SOUTH);
 
 
-        JPanel conversationPanel = new JPanel();
-        //northPanel.setBackground(new Color(28, 147, 213));
-        //conversationPanel.setLayout(new GridLayout(1, 1, 5, 5));
-
-        //conversationPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-        //conversationPanel.setLayout(new BorderLayout());
-        centerPanel.add(conversationPanel);
-
         // Server Port
         port = new TextField();
         port.setText("8084");
         port.setPreferredSize(new Dimension(80, 24));
         northPanel.add(new Label("Server Port :"), BorderLayout.WEST);
         northPanel.add(port,BorderLayout.WEST);
-        //southPanel.add(pseudoField, BorderLayout.WEST);
-
 
 
         // Server IP
@@ -122,13 +114,15 @@ public class clientIHM extends JFrame implements ConnectionListener {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 client.disconnect();
-                                northPanel.setVisible(true);
-                                change.setVisible(false);
-                                disconnect.setVisible(false);
+
+                                //northPanel.setVisible(true);
+                                //change.setVisible(false);
+                                //disconnect.setVisible(false);
 
                             }
                         }
                 );
+
                 //Connection
                 if(!client.isConnected()&& !pseudoField.getText().isEmpty()) { //Connect
                     try {
@@ -140,16 +134,11 @@ public class clientIHM extends JFrame implements ConnectionListener {
                         write("WELCOME TO THE GROUP CHAT");
                         write(" ");
                         client.getSocketOut().println(client.getPseudo());
-
-                        //write(client.getSocketOut().toString());
-                        //client.converseClient(messageField.getText());
-                        //client.getSocketOut().println();
-                        //System.out.println(client.getSocket());
-                        //write(client.getSocketOut());
-                        //connect.setText("Disconnect");
-                        //adresseIP.setEditable(false);
-                        //port.setEditable(false);
-                        //pseudoField.setEditable(false);
+                        System.out.println(serverMultiThreaded.getClients());
+                        for(int i=0;i<serverMultiThreaded.getClients().size();i++) {
+                            JButton discu = new JButton("Conversation "+(i+1));
+                            westPanel.add(discu, BorderLayout.SOUTH);
+                        }
                         messageField.requestFocusInWindow();
                     //} catch (IOException ex) {
                         //write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
@@ -237,7 +226,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
 
     public static void main(String[] args) {
-
         new clientIHM().setVisible(true);
         new clientIHM().setVisible(true);
 

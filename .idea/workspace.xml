@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Liaison back+front">
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix message synchrone">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/server/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/server/ClientThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/Window.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ihm/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/clientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,8 +108,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.clientIHM" />
-        <item itemvalue="Application.ServerIhm" />
         <item itemvalue="Application.ServerMultiThreaded" />
+        <item itemvalue="Application.ServerIhm" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.JClientUI" />
       </list>
@@ -131,7 +128,7 @@
       <workItem from="1636969304760" duration="4282000" />
       <workItem from="1637092983609" duration="28816000" />
       <workItem from="1637180018560" duration="599000" />
-      <workItem from="1637237124496" duration="4664000" />
+      <workItem from="1637237124496" duration="8604000" />
     </task>
     <task id="LOCAL-00001" summary="com0">
       <created>1636968278039</created>
@@ -168,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637177880124</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fix message synchrone">
+      <created>1637249631748</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1637249631748</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,6 +196,7 @@
     <MESSAGE value="Fix clientIHM" />
     <MESSAGE value="Fix1 clientIHM" />
     <MESSAGE value="Liaison back+front" />
-    <option name="LAST_COMMIT_MESSAGE" value="Liaison back+front" />
+    <MESSAGE value="Fix message synchrone" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix message synchrone" />
   </component>
 </project>
