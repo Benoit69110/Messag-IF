@@ -16,6 +16,7 @@ import java.io.PrintStream;
 
 public class clientIHM extends JFrame implements ConnectionListener {
     private JTextArea message;
+    private JPanel centerPanel;
     private TextField messageField;
     private TextField port;
     private TextField adresseIP;
@@ -23,13 +24,15 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private Button connect;
     private Button clear;
     private Button send;
+    JScrollPane scrollPane;
 
     private Client client;
     private ServerMultiThreaded serverMultiThreaded;
+    private ConnectionListener connectionListener;
 
     public clientIHM() {
         client = new Client(this); //Recuperer le client du back
-        serverMultiThreaded = new ServerMultiThreaded();
+        //serverMultiThreaded = new ServerMultiThreaded();
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
@@ -46,12 +49,17 @@ public class clientIHM extends JFrame implements ConnectionListener {
         westPanel.setPreferredSize(new Dimension(180,100));
         this.add(westPanel, BorderLayout.WEST);
 
+        //System.out.println(client.getPseudosConnected());
+        /*for(int i=0; i<client.getPseudosConnected().size();i++){
+            System.out.println(client.getPseudosConnected().get(i));
+        }*/
 
-        JPanel centerPanel = new JPanel();
+
+        centerPanel = new JPanel();
         //northPanel.setBackground(new Color(28, 147, 213));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         centerPanel.setLayout(new BorderLayout());
-        this.add(centerPanel, BorderLayout.CENTER);
+        getClientIHM().add(centerPanel, BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         //northPanel.setBackground(new Color(28, 147, 213));
@@ -94,17 +102,20 @@ public class clientIHM extends JFrame implements ConnectionListener {
         connect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 northPanel.setVisible(false);
                 JButton change = new JButton("Change Port/Server IP");
                 JButton disconnect = new JButton("Disconnect");
+                JButton connectedClients = new JButton("Connected clients");
                 westPanel.add(change);
                 change.addActionListener(
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 northPanel.setVisible(true);
-                                change.setVisible(false);
-                                disconnect.setVisible(false);
+                                westPanel.removeAll();
+                                centerPanel.removeAll();
+
                             }
                         }
                 );
@@ -114,51 +125,87 @@ public class clientIHM extends JFrame implements ConnectionListener {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 client.disconnect();
-
-                                //northPanel.setVisible(true);
-                                //change.setVisible(false);
-                                //disconnect.setVisible(false);
+                                northPanel.setVisible(true);
+                                centerPanel.removeAll(); //******
+                                westPanel.removeAll();
 
                             }
                         }
                 );
-
                 //Connection
                 if(!client.isConnected()&& !pseudoField.getText().isEmpty()) { //Connect
                     try {
-                        client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
 
+                        JButton groupChat = new JButton("Group chat");
+                        westPanel.add(groupChat);
+
+                        groupChat.addActionListener(
+                                new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()));
+                                    }
+                                });
 
                         write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
                         write(" ");
-                        write("WELCOME TO THE GROUP CHAT");
+                        //write("WELCOME TO THE GROUP CHAT");
                         write(" ");
-                        client.getSocketOut().println(client.getPseudo());
-                        System.out.println(serverMultiThreaded.getClients());
-                        for(int i=0;i<serverMultiThreaded.getClients().size();i++) {
+
+                        //client.getSocketOut().println(client.getPseudo());
+                        //System.out.println(serverMultiThreaded.getClients());
+                        /*for(int i=0;i<serverMultiThreaded.getClients().size();i++) {
                             JButton discu = new JButton("Conversation "+(i+1));
                             westPanel.add(discu, BorderLayout.SOUTH);
-                        }
+                        }*/
                         messageField.requestFocusInWindow();
-                    //} catch (IOException ex) {
+
+                        //} catch (IOException ex) {
                         //write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
                     } catch (NumberFormatException ex) {
                         write("Error : you must provide a correct ip address and port...");
                     }
                 } else if(client.isConnected()) { //Deconnect
+
                     client.disconnect();
                     //connect.setText("Connect");
                     //adresseIP.setEditable(true);
                     //port.setEditable(true);
                     //pseudoField.setEditable(true);
                 }
+                westPanel.add(connectedClients);
+                connectedClients.addActionListener(
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                //client.connectPrivate(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
+
+                                for(int i=0;i<client.getPseudosConnected().size();i++){
+                                    if(!(client.getPseudosConnected().get(i)).equals(client.getPseudo())) {
+                                        JButton connectClient = new JButton("Chat with : " + client.getPseudosConnected().get(i));
+                                        connectedClients.setVisible(false);
+                                        westPanel.add(connectClient, BorderLayout.SOUTH);
+                                        //Open a private conversation
+                                        connectClient.addActionListener(
+                                                new ActionListener() {
+                                                    @Override
+                                                    public void actionPerformed(ActionEvent e) {
+
+                                                    }
+                                                }
+                                        );
+                                    }
+                                }
+                            }
+                        });
             }
         });
         northPanel.add(connect);
 
+
         // Log Area
         message = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(message);
+        scrollPane = new JScrollPane(message);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -172,6 +219,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     if(client.isConnected() && !messageField.getText().isEmpty()) {
                         client.addMessage(messageField.getText());
                         messageField.setText("");
+
                     }
                 }
             }
@@ -200,6 +248,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
         });
         southPanel.add(send, BorderLayout.EAST);
 
+
+
+    }
+
+    private clientIHM getClientIHM() {
+        return this;
     }
 
     @Override
@@ -226,7 +280,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
 
     public static void main(String[] args) {
-        new clientIHM().setVisible(true);
         new clientIHM().setVisible(true);
 
     }

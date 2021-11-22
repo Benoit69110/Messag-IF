@@ -79,6 +79,7 @@ public class Client implements ConnectionListener{
         receive=new ReceiverThread(this, conL);
         receive.start();
     }
+
     @Override
     public void onReceiveMessage(String msg) {
         conL.onReceiveMessage(msg);
@@ -93,8 +94,10 @@ public class Client implements ConnectionListener{
     }
 
     public synchronized void addMessage(String message){
-        if(socket!=null && isConnected())
+        if(socket!=null && isConnected()) {
             socketOut.println(encrypt(message));
+        }
+        //displayPseudosConnected();
     }
     public synchronized void disconnect(){
         try {
@@ -153,10 +156,6 @@ public class Client implements ConnectionListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void converseClient(String mess){
-        socketOut.println(encrypt(mess));
     }
 
     public void converseWith(String pseudoDest,String message){
@@ -240,7 +239,7 @@ public class Client implements ConnectionListener{
         });
         client.connect("greg","localhost",8084);
         client.converse();
-        //client.converseClient("wesh");
+        //client.converseWith("wesh");
         client.disconnect();
     }
 }
