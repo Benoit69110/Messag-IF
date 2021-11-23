@@ -25,6 +25,7 @@ public class Client implements ConnectionListener{
     private int port;
     private String host;
     private PrintStream socketOut; // Flux de sortie en clair
+
     private BufferedReader socketIn; // Flux d'entrée en clair
     private LinkedList<String> pseudosConnected;
     private ReceiverThread receive;
@@ -80,6 +81,9 @@ public class Client implements ConnectionListener{
         receive.start();
     }
 
+
+
+
     @Override
     public void onReceiveMessage(String msg) {
         conL.onReceiveMessage(msg);
@@ -102,6 +106,8 @@ public class Client implements ConnectionListener{
         if(socket!=null && isConnected()) {
             socketOut.println(encrypt(message));
         }
+        //receive=new ReceiverThread(this, conL);
+        //receive.start();
         //displayPseudosConnected();
     }
     public synchronized void disconnect(){
@@ -163,11 +169,13 @@ public class Client implements ConnectionListener{
         }
     }
 
-    public void converseWith(String pseudoDest,String message){
-        socketOut.println(encrypt("private "+pseudoDest+" "+message));
+    public void converseWith(String pseudoDest,String message) {
+            socketOut.println(encrypt("private " + pseudoDest + " " + message));
+        //receive=new ReceiverThread(this, conL);
+        //receive.start();
     }
 
-    public LinkedList<String> getPseudosConnected(){
+        public LinkedList<String> getPseudosConnected(){
         return pseudosConnected;
     }
 

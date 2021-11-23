@@ -47,6 +47,7 @@ public class ReceiverThread extends Thread{
                         listener.onReceivePrivateMessage(msg);
                     }else{
                         listener.onReceiveMessage(msg);
+
                     }
                     System.out.println(msg);
                 }else if(!msg.equals(BEGIN_RECEIVE_PSEUDOS) && !msg.equals(END_RECEIVE_PSEUDOS)){
