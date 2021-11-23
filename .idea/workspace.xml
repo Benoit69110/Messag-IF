@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="privateConversation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ihm/client/privateClientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/privateClientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +40,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.clientIHM">
+  <component name="RunManager" selected="Application.clientIHM3">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="back.client.Client" />
       <module name="Messag-IF" />
@@ -149,7 +153,7 @@
       <workItem from="1636969304760" duration="4282000" />
       <workItem from="1637092983609" duration="28816000" />
       <workItem from="1637180018560" duration="599000" />
-      <workItem from="1637237124496" duration="34308000" />
+      <workItem from="1637237124496" duration="42665000" />
     </task>
     <task id="LOCAL-00001" summary="com0">
       <created>1636968278039</created>
@@ -214,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637681312160</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="privateConversation">
+      <created>1637681752810</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1637681752810</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

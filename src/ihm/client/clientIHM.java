@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Optional;
 
 public class clientIHM extends JFrame implements ConnectionListener {
     private JTextArea message;
@@ -178,8 +179,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                 System.out.println(client.getPseudosConnected());
                                     for (p = 0; p < client.getPseudosConnected().size(); p++) {
                                         if (!(client.getPseudosConnected().get(p)).equals(client.getPseudo())) {
-                                            JButton connectClient = new JButton("Chat with : " + client.getPseudosConnected().get(p));
-                                            westPanel.add(connectClient, BorderLayout.SOUTH);
+                                            JButton connectClient = new JButton("Send to : " + client.getPseudosConnected().get(p));
+                                            westPanel.add(connectClient, BorderLayout.CENTER);
                                             //Open a private conversation
                                             connectClient.addActionListener(
                                                     new ActionListener() {
@@ -187,10 +188,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                                         public void actionPerformed(ActionEvent e) {
                                                             write("");
                                                             write("");
-                                                            new privateClientIHM(client, e.getActionCommand().substring(12),
-                                                                    adresseIP.getText(), Integer.valueOf(port.getText())).setVisible(true);
 
-
+                                                            if(!messageField.getText().isEmpty()) {
+                                                                client.converseWith(e.getActionCommand().substring(10), messageField.getText());
+                                                            }else{
+                                                                System.out.println("No message written");
+                                                            }
                                                         }
                                                     }
                                             );
@@ -266,6 +269,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
     @Override
     public void onReceivePrivateMessage(String msg) {
         write(msg);
+        System.out.println("Y'a une message!!   "+msg);
     }
 
     @Override

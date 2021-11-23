@@ -220,7 +220,7 @@ public class privateClientIHM extends JFrame implements ConnectionListener {
                         client.converseWith(pseudoDestinataire,messageField.getText());
 
                         //write("Welcome to your conversation with "+ pseudoDestinataire);
-                        //write("" + client.getPseudo() + ": " + messageField.getText());
+                        write("" + client.getPseudo() + ": " + messageField.getText());
                         messageField.setText("");
 
 
@@ -246,6 +246,8 @@ public class privateClientIHM extends JFrame implements ConnectionListener {
             public void actionPerformed(ActionEvent e) {
                 if(client.isConnected() && !messageField.getText().isEmpty()) {
                     client.converseWith(pseudoDestinataire,messageField.getText());
+
+                    write("" + client.getPseudo() + ": " + messageField.getText());
                     messageField.setText("");
                 }
             }
@@ -289,10 +291,10 @@ public class privateClientIHM extends JFrame implements ConnectionListener {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         new clientIHM().setVisible(true);
 
-    }
+    }*/
 
 
 }

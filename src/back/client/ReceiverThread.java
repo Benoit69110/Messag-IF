@@ -1,5 +1,6 @@
 package back.client;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -45,6 +46,7 @@ public class ReceiverThread extends Thread{
                     String privateMsg=msg.split(" ")[0];
                     if(privateMsg.equals("private")){
                         listener.onReceivePrivateMessage(msg);
+
                     }else{
                         listener.onReceiveMessage(msg);
 
