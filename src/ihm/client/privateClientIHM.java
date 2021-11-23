@@ -282,6 +282,7 @@ public class privateClientIHM extends JFrame implements ConnectionListener {
             }
             if(!msg.isEmpty()) {
                 message.append(msg + "\n");
+
                 message.setCaretPosition(message.getDocument().getLength());
             }
         }
