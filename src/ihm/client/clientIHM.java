@@ -24,16 +24,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private Button clear;
     private Button send;
     JScrollPane scrollPane;
-    private JButton groupChat;
     private int p=0;
 
     private Client client;
-    private ServerMultiThreaded serverMultiThreaded;
-    private ConnectionListener connectionListener;
 
     public clientIHM() {
         client = new Client(this); //Recuperer le client du back
-        //serverMultiThreaded = new ServerMultiThreaded();
         // Initialisation de l'IHM
         setTitle("IHM Client");
         setSize(680, 480);
@@ -50,20 +46,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
         westPanel.setPreferredSize(new Dimension(180,100));
         this.add(westPanel, BorderLayout.WEST);
 
-        //System.out.println(client.getPseudosConnected());
-        /*for(int i=0; i<client.getPseudosConnected().size();i++){
-            System.out.println(client.getPseudosConnected().get(i));
-        }*/
-
-
         centerPanel = new JPanel();
-        //northPanel.setBackground(new Color(28, 147, 213));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         centerPanel.setLayout(new BorderLayout());
         getClientIHM().add(centerPanel, BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
-        //northPanel.setBackground(new Color(28, 147, 213));
         southPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         southPanel.setLayout(new BorderLayout());
         centerPanel.add(southPanel, BorderLayout.SOUTH);
@@ -113,10 +101,9 @@ public class clientIHM extends JFrame implements ConnectionListener {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                northPanel.setVisible(true);
-                                westPanel.removeAll();
-                                centerPanel.removeAll();
-
+                                new clientIHM().setVisible(true);
+                                client.disconnect();
+                                dispose();
                             }
                         }
                 );
@@ -125,10 +112,9 @@ public class clientIHM extends JFrame implements ConnectionListener {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                new clientIHM().setVisible(true);
                                 client.disconnect();
-                                northPanel.setVisible(true);
-                                centerPanel.removeAll(); //******
-                                westPanel.removeAll();
+                                dispose();
 
                             }
                         }
@@ -140,15 +126,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
                         write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
                         write(" ");
-                        //write("WELCOME TO THE GROUP CHAT");
                         write(" ");
 
-                        //client.getSocketOut().println(client.getPseudo());
-                        //System.out.println(serverMultiThreaded.getClients());
-                        /*for(int i=0;i<serverMultiThreaded.getClients().size();i++) {
-                            JButton discu = new JButton("Conversation "+(i+1));
-                            westPanel.add(discu, BorderLayout.SOUTH);
-                        }*/
                         messageField.requestFocusInWindow();
 
                         //} catch (IOException ex) {
@@ -156,13 +135,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     } catch (NumberFormatException ex) {
                         write("Error : you must provide a correct ip address and port...");
                     }
-                } else if(client.isConnected()) { //Deconnect
-
+                } else if(client.isConnected()) { //Disconnect
                     client.disconnect();
-                    //connect.setText("Connect");
-                    //adresseIP.setEditable(true);
-                    //port.setEditable(true);
-                    //pseudoField.setEditable(true);
                 }
                 westPanel.add(connectedClients);
                 connectedClients.addActionListener(
@@ -170,15 +144,14 @@ public class clientIHM extends JFrame implements ConnectionListener {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 //client.connectPrivate(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
-                                connectedClients.setVisible(false);
-                                if(client.getPseudosConnected().size()==1) {
-                                    JTextArea noConnection = new JTextArea("No one is connected");
-                                    noConnection.setBackground(new Color(164, 217, 220));
-                                    westPanel.add(noConnection, BorderLayout.SOUTH);
+                                if(client.getPseudosConnected().size()==0 ||
+                                        client.getPseudosConnected().size()==1) {
+                                    System.out.println("No one is connected");
                                 }
-                                System.out.println(client.getPseudosConnected());
                                     for (p = 0; p < client.getPseudosConnected().size(); p++) {
-                                        if (!(client.getPseudosConnected().get(p)).equals(client.getPseudo())) {
+                                        if (!(client.getPseudosConnected().get(p)).equals(client.getPseudo())
+                                        && !((client.getPseudosConnected().get(p)).equals("Anonymous"))) {
+                                            connectedClients.setVisible(false);
                                             JButton connectClient = new JButton("Send to : " + client.getPseudosConnected().get(p));
                                             westPanel.add(connectClient, BorderLayout.CENTER);
                                             //Open a private conversation
@@ -269,7 +242,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
     @Override
     public void onReceivePrivateMessage(String msg) {
         write(msg);
-        System.out.println("Y'a une message!!   "+msg);
     }
 
     @Override

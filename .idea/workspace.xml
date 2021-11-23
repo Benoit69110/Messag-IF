@@ -4,9 +4,7 @@
     <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="privateConversation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/ReceiverThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/client/privateClientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/privateClientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +25,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="ProjectId" id="20wr0zkYOyBmFLAzPlUImPMECh1" />
   <component name="ProjectViewState">
