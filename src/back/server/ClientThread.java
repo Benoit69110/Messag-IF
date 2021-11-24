@@ -50,7 +50,7 @@ public class ClientThread extends Thread {
 					line=server.decrypt(line);
 					if(!pseudoSetted){
 						if(pseudoExist(line)){
-							socOut.println(server.encrypt("This pseudo is already used. Choose another one below."));
+							socOut.println(server.encrypt("This pseudo is already used. Disconnect and choose another pseudo."));
 						}else {
 							pseudo = line;
 							pseudoSetted = true;
