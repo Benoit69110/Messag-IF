@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="update connectedList">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/server/ServerIhm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/server/ServerIhm.java" afterDir="false" />
-    </list>
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="fix connectionList" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -155,7 +149,7 @@
       <workItem from="1637092983609" duration="28816000" />
       <workItem from="1637180018560" duration="599000" />
       <workItem from="1637237124496" duration="42665000" />
-      <workItem from="1637737715964" duration="3858000" />
+      <workItem from="1637737715964" duration="4299000" />
     </task>
     <task id="LOCAL-00001" summary="com0">
       <created>1636968278039</created>
@@ -248,7 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637739369102</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fix connectionList">
+      <created>1637742022535</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1637742022535</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,6 +280,7 @@
     <MESSAGE value="privateConversation v3" />
     <MESSAGE value="privateConversation v4" />
     <MESSAGE value="update connectedList" />
-    <option name="LAST_COMMIT_MESSAGE" value="update connectedList" />
+    <MESSAGE value="fix connectionList" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix connectionList" />
   </component>
 </project>
