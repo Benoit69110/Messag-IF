@@ -90,7 +90,11 @@ public class ServerMultiThreaded implements ConnectionListener{
 	 */
 	public synchronized void stop() {
 		try {
+			for(ClientThread client : clients){
+				client.stop();
+			}
 			server.close();
+			clients.clear();
 		} catch (IOException e) {
 			//e.printStackTrace();
 		}
