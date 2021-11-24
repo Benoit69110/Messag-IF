@@ -28,6 +28,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private JButton connectClient;
     private JButton connectedClients;
     private JButton disconnect;
+    private JButton update;
     private ArrayList <JButton> listConnectClient;
     JScrollPane scrollPane;
     private int p=0;
@@ -145,12 +146,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     client.disconnect();
                 }
                 westPanel.add(connectedClients);
+                listConnectClient = new ArrayList<>();
                 connectedClients.addActionListener(
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 clicked=true;
-                                listConnectClient = new ArrayList<>();
                                 //client.connectPrivate(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
                                 if(client.getPseudosConnected().size()==0 ||
                                         client.getPseudosConnected().size()==1) {
@@ -181,9 +182,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                             );
                                         }
                                     }
-                                    JButton update = new JButton("update connection list");
+                                    update = new JButton("update connection list");
                                     update.setBackground(new Color(164, 217, 220));
-                                    westPanel.add(update);
                                     update.addActionListener(
                                         new ActionListener() {
                                             @Override
@@ -201,7 +201,11 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
                             }
                         });
+                    for(int i=0; i<listConnectClient.size();i++) {
+                        westPanel.add(listConnectClient.get(i));
+                    }
             }
+
         });
         northPanel.add(connect);
 
