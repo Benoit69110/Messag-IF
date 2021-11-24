@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix sendToAll">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/server/ServerMultiThreaded.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/server/ServerMultiThreaded.java" afterDir="false" />
-    </list>
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="lastCommit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,6 +150,7 @@
       <workItem from="1637180018560" duration="599000" />
       <workItem from="1637237124496" duration="42665000" />
       <workItem from="1637737715964" duration="4644000" />
+      <workItem from="1637752443799" duration="484000" />
     </task>
     <task id="LOCAL-00001" summary="com0">
       <created>1636968278039</created>
@@ -302,7 +299,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637750034340</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="lastCommit">
+      <created>1637752457372</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1637752457372</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +331,6 @@
     <MESSAGE value="Fix1 clientIHM" />
     <MESSAGE value="Liaison back+front" />
     <MESSAGE value="Fix message synchrone" />
-    <MESSAGE value="lastCommit" />
     <MESSAGE value="button groupChat" />
     <MESSAGE value="privateConversation" />
     <MESSAGE value="privateConversation v3" />
@@ -339,6 +342,7 @@
     <MESSAGE value="Fix pseudoAlreadyUsed" />
     <MESSAGE value="Fix clearHistoric" />
     <MESSAGE value="Fix sendToAll" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix sendToAll" />
+    <MESSAGE value="lastCommit" />
+    <option name="LAST_COMMIT_MESSAGE" value="lastCommit" />
   </component>
 </project>
