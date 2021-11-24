@@ -107,7 +107,6 @@ public class Client implements ConnectionListener{
 
     }
 
-
     /**
      *
      * @param msg Message reçu.
@@ -133,6 +132,7 @@ public class Client implements ConnectionListener{
     /**
      * Send a message encrypted
      * @param message
+     *
      */
     public synchronized void addMessage(String message){
         if(socket!=null && isConnected()) {
@@ -172,7 +172,6 @@ public class Client implements ConnectionListener{
             System.out.println(pseudo);
         }
     }
-
     /**
      * Launch a conversation with different commands
      */
@@ -274,7 +273,8 @@ public class Client implements ConnectionListener{
      * Encrypt the message with the algorithm and the key generated in the constructor
      * @param valueToEncrypt plain message
      * @return message encrypted
-     */
+     * */
+
     public String encrypt(String valueToEncrypt){
         String res="";
         try{

@@ -1,10 +1,12 @@
+/***
+ * clientIHM
+ * Date: 24/11/21
+ * Authors: balgourdin, gdelambert, malami
+ */
+
 package ihm.client;
-
-
 import back.client.Client;
 import back.client.ConnectionListener;
-import back.server.ServerMultiThreaded;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,12 +14,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class clientIHM extends JFrame implements ConnectionListener {
     private JTextArea message;
     private JPanel centerPanel;
     private JPanel southPanel;
+    private JPanel northPanel;
+    private JPanel westPanel;
     private TextField messageField;
     private TextField port;
     private TextField adresseIP;
@@ -29,27 +32,27 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private JButton connectedClients;
     private JButton disconnect;
     private JButton update;
+    private JButton change;
     private ArrayList <JButton> listConnectClient;
-    JScrollPane scrollPane;
+    private JScrollPane scrollPane;
     private int p=0;
-    boolean clicked=false;
-
     private Client client;
 
     public clientIHM() {
-        client = new Client(this); //Recuperer le client du back
-        // Initialisation de l'IHM
+        /**Create a client*/
+        client = new Client(this);
+        /**Initialisation of the frame*/
         setTitle("IHM Client");
         setSize(680, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanel northPanel = new JPanel();
+        northPanel = new JPanel();
         northPanel.setBackground(new Color(28, 147, 213));
         northPanel.setPreferredSize(new Dimension(160,40));
         this.add(northPanel, BorderLayout.NORTH);
 
-        JPanel westPanel = new JPanel();
+        westPanel = new JPanel();
         westPanel.setBackground(new Color(164, 217, 220));
         westPanel.setPreferredSize(new Dimension(180,100));
         this.add(westPanel, BorderLayout.WEST);
@@ -64,7 +67,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
         southPanel.setLayout(new BorderLayout());
         centerPanel.add(southPanel, BorderLayout.SOUTH);
 
-
         // Server Port
         port = new TextField();
         port.setText("8084");
@@ -72,14 +74,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
         northPanel.add(new Label("Server Port :"), BorderLayout.WEST);
         northPanel.add(port,BorderLayout.WEST);
 
-
         // Server IP
         adresseIP = new TextField();
         adresseIP.setText("127.0.0.1");
         adresseIP.setPreferredSize(new Dimension(80, 24));
         northPanel.add(new Label("Server IP :"));
         northPanel.add(adresseIP);
-
 
         // Clear Button
         clear = new Button("Clear");
@@ -99,9 +99,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
         connect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 northPanel.setVisible(false);
-                JButton change = new JButton("Change Port/Server IP");
+                change = new JButton("Change Port/Server IP");
                 disconnect = new JButton("Disconnect");
                 connectedClients = new JButton("Connected clients");
                 westPanel.add(change);
@@ -125,7 +124,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                 new clientIHM().setVisible(true);
                                 client.disconnect();
                                 dispose();
-
                             }
                         }
                 );
@@ -142,13 +140,12 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     client.disconnect();
                 }
                 westPanel.add(connectedClients);
+                // Add all JButtons of connectedClients in a list
                 listConnectClient = new ArrayList<>();
                 connectedClients.addActionListener(
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                clicked=true;
-                                //client.connectPrivate(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
                                 if(client.getPseudosConnected().size()==0 ||
                                         client.getPseudosConnected().size()==1) {
                                     System.out.println("No one is connected");
@@ -180,6 +177,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                     }
                                     update = new JButton("update connection list");
                                     update.setBackground(new Color(164, 217, 220));
+                                    westPanel.add(update);
                                     update.addActionListener(
                                         new ActionListener() {
                                             @Override
@@ -189,29 +187,23 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                                     update.setVisible(false);
                                                     connectedClients.setVisible(true);
                                                 }
-
                                             }
                                         });
                                 p = 0;
-
-
                             }
                         });
                     for(int i=0; i<listConnectClient.size();i++) {
                         westPanel.add(listConnectClient.get(i));
                     }
             }
-
         });
         northPanel.add(connect);
-
 
         // Log Area
         message = new JTextArea();
         scrollPane = new JScrollPane(message);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-
 
         // Message Text Field
         messageField = new TextField("");
@@ -250,25 +242,25 @@ public class clientIHM extends JFrame implements ConnectionListener {
             }
         });
         southPanel.add(send, BorderLayout.EAST);
-
-
-
     }
 
     private clientIHM getClientIHM() {
         return this;
     }
 
+    /**This method is used to write the message in the groupChat*/
     @Override
     public void onReceiveMessage(String msg) {
         write(msg);
     }
 
+    /**This method is used to write private messages*/
     @Override
     public void onReceivePrivateMessage(String msg) {
-        write(msg);
+        write("* "+msg+"*");
     }
 
+    /**This method is used to write private messages*/
     @Override
     public void onConnectionLost(String msg) {
         write(msg);
@@ -277,6 +269,10 @@ public class clientIHM extends JFrame implements ConnectionListener {
         southPanel.setVisible(false);
     }
 
+    /**
+     * This method is used to write a message in the frame
+     * @param msg
+     */
     public synchronized void write(String msg) {
         synchronized(message) {
             while(msg.endsWith("\n")) {
@@ -289,11 +285,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
         }
     }
 
-
     public static void main(String[] args) {
         new clientIHM().setVisible(true);
-
     }
-
-
 }

@@ -63,7 +63,7 @@ public class ClientThread extends Thread {
 					if(!pseudoSetted){
 						// Check if the pseudo is not already used
 						if(pseudoExist(line)){
-							socOut.println(server.encrypt("This pseudo is already used. Choose another one below."));
+							socOut.println(server.encrypt("This pseudo is already used. Disconnect and choose another pseudo."));
 						}else {
 							pseudo = line;
 							pseudoSetted = true;
@@ -76,16 +76,6 @@ public class ClientThread extends Thread {
 						if(tokens.countTokens()>2 && tokens.nextToken().equals("private")){
 							String sendTo=tokens.nextToken();
 							if(pseudoExist(sendTo)){
-								/*if(firstPrivateMessage.get(sendTo)){
-									String senderPseudo= pseudo;
-									File convFile=new File(PATH_LOGS+senderPseudo+sendTo+".txt");
-									if(convFile.exists()){
-									}else{
-										convFile=new File(PATH_LOGS+sendTo+senderPseudo+".txt");
-									}
-								}*/
-
-								// Get the client with his pseudo
 								ClientThread clientDest= server.getClientByPseudo(sendTo);
 								String msg="";
 								while(tokens.hasMoreTokens()){

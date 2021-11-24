@@ -22,26 +22,30 @@ import back.server.ConnectionListener;
 
 public class ServerIhm extends JFrame implements ConnectionListener{
     /**
-     * Zone d'affichage des messages et informations de connexion
+     * Log area 
      */
     private TextArea logArea = new TextArea();
     /**
-     * Zone de saisie du port sur lequel on lance le serveur
+     * Server's Port text field
      */
     private TextField serverPort;
     /**
-     * Zone d'affichage de l'adresse IP de la machine
+     * Label with the server's IP
      */
     private Label serverIP;
     /**
-     * Bouton pour lancer / stopper le serveur
+     * Button to start/stop the server
      */
     private Button startServer;
     /**
-     * Bouton pour effacer les fichiers d'historique ainsi que la zone d'affichage des messages
+     * Button to clear conversation history
      */
     private Button clearHistory;
 
+
+    /**
+     * Constructor, on call, display servers panel and set up button action
+     */
     public ServerIhm() {
         ServerMultiThreaded server = new ServerMultiThreaded(this);
         // Initialisation de l'IHM
@@ -80,7 +84,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
 
         // Local Port
         serverPort = new TextField();
-        serverPort.setText("50000");
+        serverPort.setText("5000");
         north.add(serverPort);
 
         // Start/Stop Button
@@ -123,8 +127,8 @@ public class ServerIhm extends JFrame implements ConnectionListener{
     }
 
     /**
-     * Ecrit une nouvelle ligne dans la zone des messages.
-     * @param msg Message à écrire dans la zone d'affichage des messages.
+     * Write date and nex line in the texte area
+     * @param msg message to write in the text area.
      * */
     public synchronized void write(String msg) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss" );
@@ -132,20 +136,27 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         logArea.append("["+date+"]" +msg + "\n");
     }
 
+    /**
+     * Called when a client disconnect
+     * @param client client thread
+     */
     @Override
     public void onClientAccepted(ClientThread client) {
         write("Hi "+client.getPseudo()+" !");
     }
 
+    /**
+     * Called when a client connect
+     * @param client client thread
+     */
     @Override
     public void onClientDisconnected(ClientThread client) {
         write("See you soon "+client.getPseudo()+" !");
     }
 
     /**
-     * Méthode appelée lorsqu'un événement particulier survient dans la gestion du serveur.
-     * Affiche le rapport reçu dans la zone des messages.
-     * @param report Le message indiquant la nature de l'événement.
+     * Method called when the server reach unused situation display the report
+     * @param report describe the event.
      * */
     @Override
     public synchronized void acknowledge(String report) {
@@ -153,8 +164,8 @@ public class ServerIhm extends JFrame implements ConnectionListener{
     }
 
     /**
-     * Démarre l'application.
-     * @param args Arguments non utilisés.
+     * Start the server application
+     * @param args : unsused.
      * */
     public static void main(String args[]) {
         new ServerIhm().setVisible(true);
