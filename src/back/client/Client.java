@@ -1,9 +1,3 @@
-/***
- * Client
- * TCP client
- * Date: 10/01/04
- * Authors: balgourdin, gdelambert, malami
- */
 package back.client;
 
 import javax.crypto.Cipher;
@@ -14,6 +8,11 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+/***
+ * Client
+ * TCP client which can send and receive messages, thanks to another thread
+ * @author: balgourdin, gdelambert, malami
+ */
 public class Client implements ConnectionListener{
     /** Passsphrase used to encrypt messages */
     private static byte[] SECRET_KEY;
@@ -62,7 +61,7 @@ public class Client implements ConnectionListener{
                 nbLines++;
             }
         }catch (IOException e){
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         // The key length has to be 16 bytes
         sks= new SecretKeySpec(SECRET_KEY, ALGORITHM);
@@ -108,7 +107,6 @@ public class Client implements ConnectionListener{
 
     }
 
-
     /**
      *
      * @param msg Message reçu.
@@ -131,38 +129,52 @@ public class Client implements ConnectionListener{
         conL.onConnectionLost(msg);
     }
 
+    /**
+     * Send a message encrypted
+     * @param message
+     *
+     */
     public synchronized void addMessage(String message){
         if(socket!=null && isConnected()) {
             socketOut.println(encrypt(message));
         }
-
-        //receive=new ReceiverThread(this, conL);
-        //receive.start();
-        //displayPseudosConnected();
     }
+
+    /**
+     * Method to disconnect the client
+     */
     public synchronized void disconnect(){
         try {
             socketOut.close();
             socketIn.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
 
+    /**
+     * Return true if the client is connected
+     * @return
+     */
     public synchronized boolean isConnected(){
         boolean res= socket!=null && !socket.isClosed() && receive!=null
                 && receive.isRunning();
         return res;
     }
 
+    /**
+     * Display the list of pseudos connected
+     */
     public void displayPseudosConnected(){
         for(String pseudo:pseudosConnected){
             System.out.println(pseudo);
         }
     }
-
+    /**
+     * Launch a conversation with different commands
+     */
     public void converse(){
         try {
             String line;
@@ -197,46 +209,71 @@ public class Client implements ConnectionListener{
         }
     }
 
+    /**
+     * Send a message encrypted to someone defined by his pseudo
+     * @param pseudoDest
+     * @param message
+     */
     public void converseWith(String pseudoDest,String message) {
-            socketOut.println(encrypt("private " + pseudoDest + " " + message));
-        //receive=new ReceiverThread(this, conL);
-        //receive.start();
+        socketOut.println(encrypt("private " + pseudoDest + " " + message));
     }
 
-        public LinkedList<String> getPseudosConnected(){
+    /**
+     * @return pseudosConnected
+     */
+    public LinkedList<String> getPseudosConnected(){
         return pseudosConnected;
     }
 
+    /**
+     * @return pseudoSetted
+     */
     public boolean getPseudoSetted() {
         return pseudoSetted;
     }
+
+    /**
+     * Reset the list of pseudos connected
+     */
     public void resetPseudosConnected(){
         pseudosConnected=new LinkedList<>();
     }
 
+    /**
+     * @return pseudo
+     */
     public String getPseudo() {
         return pseudo;
     }
 
+    /**
+     * Set the pseudo of the client
+     * @param pseudo
+     */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
         this.pseudoSetted=true;
     }
 
+    /**
+     * @return socket
+     */
     public Socket getSocket() {
         return socket;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
+    /**
+     * @return socketIn
+     */
     public BufferedReader getSocketIn() {
         return socketIn;
     }
-    public PrintStream getSocketOut() {
-        return socketOut;
-    }
+
+    /**
+     * Encrypt the message with the algorithm and the key generated in the constructor
+     * @param valueToEncrypt plain message
+     * @return message encrypted
+     * */
 
     public String encrypt(String valueToEncrypt){
         String res="";
@@ -252,6 +289,11 @@ public class Client implements ConnectionListener{
         return res;
     }
 
+    /**
+     * Decrypt the value encrypted
+     * @param encryptedValue encrypted message
+     * @return message decrypted
+     */
     public String decrypt(String encryptedValue){
         String decr="";
         try{
@@ -273,7 +315,6 @@ public class Client implements ConnectionListener{
      **/
     public static void main(String[] args) throws IOException {
         // creation socket ==> connexion
-        //Client client=new Client(conL);
         Client client=new Client(new ConnectionListener() {
             public void onReceiveMessage(String msg) {}
             public void onReceivePrivateMessage(String msg) {}
@@ -281,7 +322,6 @@ public class Client implements ConnectionListener{
         });
         client.connect("greg","localhost",8084);
         client.converse();
-        //client.converseWith("wesh");
         client.disconnect();
     }
 }

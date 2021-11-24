@@ -1,26 +1,26 @@
 package back.server;
 
-/**
- * Interface d'écoute d'une connexion d'un processus d'écoute client à un client distant.
- * @author aleconte, rdeclercq
- * */
+/***
+ * Listener interface to communicate between the back and the front
+ * @author: balgourdin, gdelambert, malami
+ */
 public interface ConnectionListener {
 
     /**
-     * Méthode à appeler lors de la connexion du client.
-     * @param client Le processus d'écoute client.
+     * Method called on a client connexion
+     * @param client
      * */
     public void onClientAccepted(ClientThread client);
 
     /**
-     * Méthode à appeler lors de la déconnection du client.
-     * @param client Le processus d'écoute client.
+     * Method called when a client disconnect
+     * @param client
      * */
     public void onClientDisconnected(ClientThread client);
 
     /**
-     * Méthode à appeler lorsqu'un événement particulier se produit et que l'on souhaite notifier le serveur.
-     * @param report Le message décrivant l'événement.
+     * Method called to aknowledge the front of an event
+     * @param report
      * */
     public void acknowledge(String report);
 }

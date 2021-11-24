@@ -1,10 +1,3 @@
-/***
- * EchoServer
- * Example of a TCP server
- * Date: 10/01/04
- * Authors:
- */
-
 package back.server;
 
 import javax.crypto.Cipher;
@@ -15,25 +8,40 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.LinkedList;
-
+/***
+ * Server TCP
+ * @author: balgourdin, gdelambert, malami
+ */
 public class ServerMultiThreaded implements ConnectionListener{
-	private static String ALGORITHM;
+	/** Passsphrase used to encrypt messages */
 	private static byte[] SECRET_KEY;
+	/** Algorithm used to encrypt messages */
+	private static String ALGORITHM;
+	/** Key used to encrypt messages */
 	private SecretKeySpec sks;
-
+	/** Server socket */
 	private ServerSocket server;
+	/** Listening port */
 	private int port;
-	private Conversation conversation;
+	/** List of connected clients */
 	private LinkedList<ClientThread> clients;
+	/** Output stream of the sever */
 	private PrintWriter out;
 	private String PATH_LOGS="logs/";
+	/** Historic with all the conversation */
 	private File conversationAll;
+	/** Thread to handle connexion */
 	private ClientConnectedThread connectedClientsThread;
 	private ConnectionListener conL;
 
+	/**
+	 * Constructor
+	 * @param conL
+	 */
 	public ServerMultiThreaded(ConnectionListener conL){
 		this.conL=conL;
 		clients=new LinkedList<>();
+		// Get the configuration (algorithm and passphrase) to encrypt messages
 		try{
 			BufferedReader fileReader=new BufferedReader(new FileReader("config/config.txt"));
 			String line;
@@ -57,19 +65,29 @@ public class ServerMultiThreaded implements ConnectionListener{
 		connectedClientsThread=new ClientConnectedThread(this);
 	}
 
+	/**
+	 * Method called to start the server
+	 * @param port
+	 */
 	public synchronized void start(int port) {
 		this.port=port;
 		try {
+			// Creation of the server socket
 			server=new ServerSocket(port);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println("Server ready...");
+		// New thread to handle connexions
 		ConnectionThread connectionThread=new ConnectionThread(this);
+		// Start the thread
 		connectionThread.start();
 		System.out.println("End server call...");
 	}
 
+	/**
+	 * Stop the server and all threads
+	 */
 	public synchronized void stop() {
 		try {
 			server.close();
@@ -78,14 +96,21 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Send a file which is basically the historic of a conversation
+	 * @param client
+	 * @param file
+	 */
 	public void sendHistoric(Socket client,File file){
 		try{
 			BufferedReader fileReader=new BufferedReader(new FileReader(file));
 			out=new PrintWriter(client.getOutputStream(),true);
 			String line;
 			while((line=fileReader.readLine())!=null){
+				// Decrypt the line of the file
 				line=decrypt(line);
 				line=line.split("- ")[1];
+				// Send the line encrypted without the date
 				out.println(encrypt(line));
 				out.flush();
 			}
@@ -93,6 +118,10 @@ public class ServerMultiThreaded implements ConnectionListener{
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Clear the file
+	 */
 	public void clearHistoric(){
 		File historic = new File("logs/serverLogs.txt");
 		if(historic.exists()){
@@ -106,6 +135,10 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Add a client to the map
+	 * @param newClient
+	 */
 	public void addClientToFirstPrivateMessage(ClientThread newClient){
 		for(ClientThread client:clients){
 			if(client!=newClient){
@@ -113,13 +146,21 @@ public class ServerMultiThreaded implements ConnectionListener{
 			}
 		}
 	}
+
+	/**
+	 * Method to accept all clients ,called in the connexionThread
+	 */
 	public void acceptClient(){
 		System.out.println("Waiting for connexion...");
 		try {
 			while(true){
+				// Accept the connexion
 				Socket clientSocket = server.accept();
+				// Create the thread to communicate
 				ClientThread ct=new ClientThread(clientSocket,this);
+				// Add the client to the list
 				clients.add(ct);
+				// Start the thread
 				ct.start();
 			}
 		} catch (IOException e) {
@@ -127,6 +168,11 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Find a client with a pseudo
+	 * @param pseudo
+	 * @return
+	 */
 	public ClientThread getClientByPseudo(String pseudo){
 		for(ClientThread client:clients){
 			if(pseudo.equals(client.getPseudo())){
@@ -143,8 +189,17 @@ public class ServerMultiThreaded implements ConnectionListener{
 		return connectedClientsThread;
 	}
 
+	/**
+	 * Broadcast a private message
+	 * @param sender client sender
+	 * @param dest client receiver
+	 * @param msg message to send
+	 * @param toSave true if we want to save the message
+	 */
 	public void broadcastTo(ClientThread sender,ClientThread dest, String msg, boolean toSave){
 		try{
+			// Save the private conversation in the file named "pseudoSenderPseudoReceiver"
+			// or "pseudoReceiverPseudoSender"
 			if (toSave) {
 				String senderPseudo= sender.getPseudo();
 				String destPseudo= dest.getPseudo();
@@ -156,6 +211,7 @@ public class ServerMultiThreaded implements ConnectionListener{
 					saveMessage(sender,convFile,msg);
 				}
 			}
+			// Send the message encrypted to the sender and the receiver
 			out=new PrintWriter(dest.getClientSocket().getOutputStream(),true);
 			out.println(encrypt("private "+msg));
 			out.flush();
@@ -163,15 +219,22 @@ public class ServerMultiThreaded implements ConnectionListener{
 			out.println(encrypt("private "+msg));
 			out.flush();
 		}catch(IOException e){
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Send a message to evrybody
+	 * @param sender client sender
+	 * @param msg message to send
+	 * @param toSave true if we want to save the message
+	 */
 	public void broadcast(ClientThread sender, String msg, boolean toSave, File convFile){
 		try{
 			if (toSave) {
 				saveMessage(sender,convFile,msg);
 			}
+			// Broadcast to all clients
 			for(int i=0;i<clients.size();i++){
 				if(clients.get(i).getPseudoSetted()){
 					out=new PrintWriter(clients.get(i).getClientSocket().getOutputStream(),true);
@@ -184,6 +247,9 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Broadcast pseudos of connected clients
+	 */
 	public void broadcastPseudos(){
 		try{
 			for(ClientThread client:clients){
@@ -199,11 +265,18 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Save a message in a file
+	 * @param sender
+	 * @param file
+	 * @param message
+	 */
 	public void saveMessage(ClientThread sender,File file,String message){
 		DateTimeFormatter dtf= DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		LocalDateTime now=LocalDateTime.now();
 		try {
 			FileWriter myWriter=new FileWriter(file,true);
+			// Write the message encrypted in the file
 			myWriter.write(encrypt(dtf.format(now)+" - "+message)+"\r\n");
 			myWriter.close();
 		} catch (IOException e) {
@@ -211,6 +284,11 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 	}
 
+	/**
+	 * Encrypt the message with the algorithm and the key generated in the constructor
+	 * @param valueToEncrypt plain message
+	 * @return message encrypted
+	 */
 	public String encrypt(String valueToEncrypt){
 		String res="";
 		try{
@@ -225,6 +303,11 @@ public class ServerMultiThreaded implements ConnectionListener{
 		return res;
 	}
 
+	/**
+	 * Decrypt the value encrypted
+	 * @param encryptedValue encrypted message
+	 * @return message decrypted
+	 */
 	public String decrypt(String encryptedValue){
 		String decr="";
 		try{
