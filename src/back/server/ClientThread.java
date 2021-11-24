@@ -62,14 +62,6 @@ public class ClientThread extends Thread {
 						if(tokens.countTokens()>2 && tokens.nextToken().equals("private")){
 							String sendTo=tokens.nextToken();
 							if(pseudoExist(sendTo)){
-								/*if(firstPrivateMessage.get(sendTo)){
-									String senderPseudo= pseudo;
-									File convFile=new File(PATH_LOGS+senderPseudo+sendTo+".txt");
-									if(convFile.exists()){
-									}else{
-										convFile=new File(PATH_LOGS+sendTo+senderPseudo+".txt");
-									}
-								}*/
 								ClientThread clientDest= server.getClientByPseudo(sendTo);
 								String msg="";
 								while(tokens.hasMoreTokens()){
