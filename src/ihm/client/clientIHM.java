@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class clientIHM extends JFrame implements ConnectionListener {
@@ -23,8 +24,11 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private Button connect;
     private Button clear;
     private Button send;
+    private JButton connectClient;
+    private ArrayList <JButton> listConnectClient;
     JScrollPane scrollPane;
     private int p=0;
+    boolean clicked=false;
 
     private Client client;
 
@@ -144,6 +148,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                clicked=true;
+                                listConnectClient = new ArrayList<>();
                                 //client.connectPrivate(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()) );
                                 if(client.getPseudosConnected().size()==0 ||
                                         client.getPseudosConnected().size()==1) {
@@ -153,7 +159,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                         if (!(client.getPseudosConnected().get(p)).equals(client.getPseudo())
                                         && !((client.getPseudosConnected().get(p)).equals("Anonymous"))) {
                                             connectedClients.setVisible(false);
-                                            JButton connectClient = new JButton("Send to : " + client.getPseudosConnected().get(p));
+                                            connectClient = new JButton("Send to : " + client.getPseudosConnected().get(p));
+                                            listConnectClient.add(connectClient);
                                             westPanel.add(connectClient, BorderLayout.CENTER);
                                             //Open a private conversation
                                             connectClient.addActionListener(
@@ -173,7 +180,23 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                             );
                                         }
                                     }
-                                    p=0;
+                                    JButton update = new JButton("update connection list");
+                                    update.setBackground(new Color(164, 217, 220));
+                                    westPanel.add(update);
+                                    update.addActionListener(
+                                        new ActionListener() {
+                                            @Override
+                                            public void actionPerformed(ActionEvent e) {
+                                                for(int i=0;i<listConnectClient.size();i++){
+                                                    listConnectClient.get(i).setVisible(false);
+                                                    update.setVisible(false);
+                                                    connectedClients.setVisible(true);
+                                                }
+
+                                            }
+                                        });
+                                p = 0;
+
 
                             }
                         });
