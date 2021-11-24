@@ -66,15 +66,14 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 		System.out.println("Server ready...");
 		ConnectionThread connectionThread=new ConnectionThread(this);
-		connectionThread.start();
-		System.out.println("End server call...");
+		connectionThread.acceptConnection();
 	}
 
 	public synchronized void stop() {
 		try {
 			server.close();
 		} catch (IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
@@ -258,6 +257,11 @@ public class ServerMultiThreaded implements ConnectionListener{
 		broadcast(client,client.getPseudo()+" has left the server !",false, null);
 		connectedClientsThread.sendConnectedPseudo();
 		conL.onClientDisconnected(client);
+	}
+
+	@Override
+	public void onClientMessage(ClientThread client, String msg) {
+		conL.onClientMessage(client,msg);
 	}
 
 	@Override
