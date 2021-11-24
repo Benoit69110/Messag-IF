@@ -75,12 +75,12 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         center.add(scrollPane, BorderLayout.CENTER);
 
         // IP Address
-        serverIP = new Label("10.10.0.9"/*server.getLocalIP()*/);
+        serverIP = new Label("local : 10.10.0.9"/*server.getLocalIP()*/);
         north.add(serverIP);
 
         // Local Port
         serverPort = new TextField();
-        serverPort.setText("50000");
+        serverPort.setText("8084");
         north.add(serverPort);
 
         // Start/Stop Button
@@ -94,9 +94,9 @@ public class ServerIhm extends JFrame implements ConnectionListener{
                         if(port < 1024 || port > 65535) {
                             throw new NumberFormatException();
                         }
-                        server.start(port);
                         startServer.setText("Stop Server");
                         serverPort.setEditable(false);
+                        server.start(port);
                     } catch(NumberFormatException ex) {
                         write("Error: enter a port number between 1024 and 65635");
                     }
@@ -114,7 +114,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         clearHistory = new Button("Clear historique");
         clearHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //server.clearHistory();
+                server.clearHistoric(new File("logs/serverLogs.txt"));
                 write("Clear history");
             }
         });
@@ -133,17 +133,12 @@ public class ServerIhm extends JFrame implements ConnectionListener{
 
     @Override
     public void onClientAccepted(ClientThread client) {
-        write("Hi "+client.getPseudo()+" !");
+        write(" "+client.getPseudo()+" has joined the server !");
     }
 
     @Override
     public void onClientDisconnected(ClientThread client) {
-        write("See you soon "+client.getPseudo()+" !");
-    }
-
-    @Override
-    public void onClientMessage(ClientThread client, String msg) {
-        write("["+client.getPseudo()+"]"+msg);
+        write(" "+client.getPseudo()+" has left the server !");
     }
 
     /**
