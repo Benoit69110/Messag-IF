@@ -93,7 +93,8 @@ public class ServerMultiThreaded implements ConnectionListener{
 			e.printStackTrace();
 		}
 	}
-	public void clearHistoric(File historic){
+	public void clearHistoric(){
+		File historic = new File("logs/serverLogs.txt");
 		if(historic.exists()){
 			try {
 				FileWriter myWriter=new FileWriter(historic);
@@ -117,8 +118,6 @@ public class ServerMultiThreaded implements ConnectionListener{
 		try {
 			while(true){
 				Socket clientSocket = server.accept();
-				//System.out.println("Connexion from:" + clientSocket.getInetAddress());
-
 				ClientThread ct=new ClientThread(clientSocket,this);
 				clients.add(ct);
 				ct.start();
@@ -280,7 +279,7 @@ public class ServerMultiThreaded implements ConnectionListener{
 		 });
 		 server.start(8084);
 		 server.stop();
-		 server.clearHistoric(new File("logs/serverLogs.txt"));
+		 //server.clearHistoric(new File("logs/serverLogs.txt"));
 	 }
 
 
