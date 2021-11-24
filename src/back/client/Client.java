@@ -70,15 +70,17 @@ public class Client implements ConnectionListener{
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             socketOut= new PrintStream(socket.getOutputStream());
             socketOut.println(encrypt(pseudo));
+            receive=new ReceiverThread(this, conL);
+            receive.start();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
             e.printStackTrace();
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
+            conL.onConnectionLost("Connection refused");
             e.printStackTrace();
         }
-        receive=new ReceiverThread(this, conL);
-        receive.start();
+
     }
 
 

@@ -17,6 +17,7 @@ import java.util.Optional;
 public class clientIHM extends JFrame implements ConnectionListener {
     private JTextArea message;
     private JPanel centerPanel;
+    private JPanel southPanel;
     private TextField messageField;
     private TextField port;
     private TextField adresseIP;
@@ -25,6 +26,8 @@ public class clientIHM extends JFrame implements ConnectionListener {
     private Button clear;
     private Button send;
     private JButton connectClient;
+    private JButton connectedClients;
+    private JButton disconnect;
     private ArrayList <JButton> listConnectClient;
     JScrollPane scrollPane;
     private int p=0;
@@ -55,7 +58,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
         centerPanel.setLayout(new BorderLayout());
         getClientIHM().add(centerPanel, BorderLayout.CENTER);
 
-        JPanel southPanel = new JPanel();
+        southPanel = new JPanel();
         southPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         southPanel.setLayout(new BorderLayout());
         centerPanel.add(southPanel, BorderLayout.SOUTH);
@@ -98,15 +101,17 @@ public class clientIHM extends JFrame implements ConnectionListener {
 
                 northPanel.setVisible(false);
                 JButton change = new JButton("Change Port/Server IP");
-                JButton disconnect = new JButton("Disconnect");
-                JButton connectedClients = new JButton("Connected clients");
+                disconnect = new JButton("Disconnect");
+                connectedClients = new JButton("Connected clients");
                 westPanel.add(change);
                 change.addActionListener(
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+                                if(client.isConnected()){
+                                    client.disconnect();
+                                }
                                 new clientIHM().setVisible(true);
-                                client.disconnect();
                                 dispose();
                             }
                         }
@@ -128,10 +133,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     try {
                         client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()));
                         pseudoField.setEditable(false);
-
-                        write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
-                        write(" ");
-                        write(" ");
 
                         messageField.requestFocusInWindow();
 
@@ -271,6 +272,9 @@ public class clientIHM extends JFrame implements ConnectionListener {
     @Override
     public void onConnectionLost(String msg) {
         write(msg);
+        connectedClients.setVisible(false);
+        disconnect.setVisible(false);
+        southPanel.setVisible(false);
     }
 
     public synchronized void write(String msg) {

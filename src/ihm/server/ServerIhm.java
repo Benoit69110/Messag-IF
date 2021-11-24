@@ -89,6 +89,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
             public void actionPerformed(ActionEvent e) {
                 if(startServer.getText().equals("Start Server")) {
                     try {
+                        System.out.println(serverPort.getText());
                         int port = Integer.valueOf(serverPort.getText());
                         write("Server started ... ");
                         if(port < 1024 || port > 65535) {
