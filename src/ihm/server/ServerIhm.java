@@ -141,11 +141,6 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         write("See you soon "+client.getPseudo()+" !");
     }
 
-    @Override
-    public void onClientMessage(ClientThread client, String msg) {
-        write("["+client.getPseudo()+"]"+msg);
-    }
-
     /**
      * Méthode appelée lorsqu'un événement particulier survient dans la gestion du serveur.
      * Affiche le rapport reçu dans la zone des messages.
