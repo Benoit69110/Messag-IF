@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="privateConversation">
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="privateConversation v3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +37,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.clientIHM3">
+  <component name="RunManager" selected="Application.clientIHM2">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="back.client.Client" />
       <module name="Messag-IF" />
@@ -133,8 +131,8 @@
       <list>
         <item itemvalue="Application.clientIHM" />
         <item itemvalue="Application.ServerMultiThreaded" />
-        <item itemvalue="Application.Client" />
         <item itemvalue="Application.ServerIhm" />
+        <item itemvalue="Application.Client" />
         <item itemvalue="Application.JClientUI" />
       </list>
     </recent_temporary>
@@ -224,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637681752810</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="privateConversation v3">
+      <created>1637706848888</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1637706848888</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +257,7 @@
     <MESSAGE value="lastCommit" />
     <MESSAGE value="button groupChat" />
     <MESSAGE value="privateConversation" />
-    <option name="LAST_COMMIT_MESSAGE" value="privateConversation" />
+    <MESSAGE value="privateConversation v3" />
+    <option name="LAST_COMMIT_MESSAGE" value="privateConversation v3" />
   </component>
 </project>

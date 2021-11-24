@@ -123,6 +123,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
                 if(!client.isConnected()&& !pseudoField.getText().isEmpty()) { //Connect
                     try {
                         client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()));
+                        pseudoField.setEditable(false);
 
                         write("Connected to " + adresseIP.getText() + " on port " + Integer.valueOf(port.getText()));
                         write(" ");
