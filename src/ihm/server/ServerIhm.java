@@ -75,7 +75,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         center.add(scrollPane, BorderLayout.CENTER);
 
         // IP Address
-        serverIP = new Label("10.10.0.9"/*server.getLocalIP()*/);
+        serverIP = new Label("127.0.0.1"/*server.getLocalIP()*/);
         north.add(serverIP);
 
         // Local Port
@@ -111,7 +111,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         north.add(startServer);
 
         // Clear historique Button
-        clearHistory = new Button("Clear historique");
+        clearHistory = new Button("Clear historic");
         clearHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //server.clearHistory();

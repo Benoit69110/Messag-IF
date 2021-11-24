@@ -276,7 +276,6 @@ public class ServerMultiThreaded implements ConnectionListener{
 		 ServerMultiThreaded server=new ServerMultiThreaded(new ConnectionListener() {
 			 public void onClientAccepted(ClientThread client) {}
 			 public void onClientDisconnected(ClientThread client) {}
-			 public void onClientMessage(ClientThread client, String msg) {}
 			 public void acknowledge(String report) {}
 		 });
 		 server.start(8084);

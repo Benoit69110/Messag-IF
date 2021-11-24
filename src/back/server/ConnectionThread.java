@@ -8,8 +8,13 @@ public class ConnectionThread extends Thread {
     }
 
     @Override
-    public void run() {
-        server.acceptClient();
+    public synchronized void run() {
+        try{
+            server.acceptClient();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void acceptConnection() {
