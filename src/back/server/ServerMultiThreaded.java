@@ -121,9 +121,9 @@ public class ServerMultiThreaded implements ConnectionListener{
 
 	/**
 	 * Clear the file
-	 * @param historic
 	 */
-	public void clearHistoric(File historic){
+	public void clearHistoric(){
+		File historic = new File("logs/serverLogs.txt");
 		if(historic.exists()){
 			try {
 				FileWriter myWriter=new FileWriter(historic);
@@ -362,7 +362,7 @@ public class ServerMultiThreaded implements ConnectionListener{
 		 });
 		 server.start(8084);
 		 server.stop();
-		 server.clearHistoric(new File("logs/serverLogs.txt"));
+		 //server.clearHistoric(new File("logs/serverLogs.txt"));
 	 }
 
 

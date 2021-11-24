@@ -119,7 +119,7 @@ public class ServerIhm extends JFrame implements ConnectionListener{
         clearHistory = new Button("Clear historic");
         clearHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //server.clearHistory();
+                server.clearHistoric();
                 write("Clear history");
             }
         });
