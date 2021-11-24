@@ -66,14 +66,15 @@ public class ServerMultiThreaded implements ConnectionListener{
 		}
 		System.out.println("Server ready...");
 		ConnectionThread connectionThread=new ConnectionThread(this);
-		connectionThread.acceptConnection();
+		connectionThread.start();
+		System.out.println("End server call...");
 	}
 
 	public synchronized void stop() {
 		try {
 			server.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -260,11 +261,6 @@ public class ServerMultiThreaded implements ConnectionListener{
 	}
 
 	@Override
-	public void onClientMessage(ClientThread client, String msg) {
-		conL.onClientMessage(client,msg);
-	}
-
-	@Override
 	public void acknowledge(String report) {
 		conL.acknowledge(report);
 	}
@@ -280,7 +276,6 @@ public class ServerMultiThreaded implements ConnectionListener{
 		 ServerMultiThreaded server=new ServerMultiThreaded(new ConnectionListener() {
 			 public void onClientAccepted(ClientThread client) {}
 			 public void onClientDisconnected(ClientThread client) {}
-			 public void onClientMessage(ClientThread client, String msg) {}
 			 public void acknowledge(String report) {}
 		 });
 		 server.start(8084);

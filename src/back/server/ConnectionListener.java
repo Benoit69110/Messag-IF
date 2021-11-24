@@ -19,13 +19,6 @@ public interface ConnectionListener {
     public void onClientDisconnected(ClientThread client);
 
     /**
-     * Méthode à appeler lors de la réception d'un message par le client.
-     * @param client Le processus d'écoute client.
-     * @param msg Le message reçu.
-     * */
-    public void onClientMessage(ClientThread client, String msg);
-
-    /**
      * Méthode à appeler lorsqu'un événement particulier se produit et que l'on souhaite notifier le serveur.
      * @param report Le message décrivant l'événement.
      * */
