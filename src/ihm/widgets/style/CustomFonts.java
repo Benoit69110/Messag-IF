@@ -1,4 +1,4 @@
-package gui_old.widgets.style;
+package ihm.widgets.style;
 
 import java.awt.Font;
 
