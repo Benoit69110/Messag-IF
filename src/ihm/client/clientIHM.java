@@ -7,8 +7,6 @@
 package ihm.client;
 import back.client.Client;
 import back.client.ConnectionListener;
-import back.server.ServerMultiThreaded;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class clientIHM extends JFrame implements ConnectionListener {
     private JTextArea message;
@@ -180,6 +177,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
                                     }
                                     update = new JButton("update connection list");
                                     update.setBackground(new Color(164, 217, 220));
+                                    westPanel.add(update);
                                     update.addActionListener(
                                         new ActionListener() {
                                             @Override
