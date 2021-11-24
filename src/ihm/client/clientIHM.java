@@ -259,7 +259,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
     /**This method is used to write private messages*/
     @Override
     public void onReceivePrivateMessage(String msg) {
-        write(msg);
+        write("* "+msg+"*");
     }
 
     /**This method is used to write private messages*/
