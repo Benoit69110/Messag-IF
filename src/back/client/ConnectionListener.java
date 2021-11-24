@@ -1,21 +1,25 @@
 package back.client;
 
 /**
- * Interface d'écoute de la connexion d'un client avec un serveur distant.
- * @author aleconte, rdeclercq
+ * Listener interface to communicate between the back and the front
+ * @author balgourdin, gdelambert, malami
  * */
 public interface ConnectionListener {
     /**
-     * Méthode à appeler lors de la réception d'un message.
-     * @param msg Message reçu.
+     * Method called when the client receive a message
+     * @param msg Message receive.
      * */
     public void onReceiveMessage(String msg);
 
     /**
-     * Méthode à appeler lors de la déconnexion du client.
-     * @param msg Message de déconnexion.
+     * Method called when a client has been disconnected
+     * @param msg
      * */
     public void onConnectionLost(String msg);
 
+    /**
+     * Method called when a client receive a private message
+     * @param msg
+     */
     public void onReceivePrivateMessage(String msg);
 }

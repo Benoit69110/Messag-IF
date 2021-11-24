@@ -1,8 +1,8 @@
 /***
- * EchoClient
- * Example of a TCP client 
+ * Client
+ * TCP client
  * Date: 10/01/04
- * Authors:
+ * Authors: balgourdin, gdelambert, malami
  */
 package back.client;
 
@@ -15,25 +15,39 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Client implements ConnectionListener{
+    /** Passsphrase used to encrypt messages */
     private static byte[] SECRET_KEY;
+    /** Algorithm used to encrypt messages */
     private static String ALGORITHM;
+    /** Key used to encrypt messages */
     private SecretKeySpec sks;
-
+    /** Pseudo of the client */
     private String pseudo;
     private boolean pseudoSetted;
+    /** Socket of the client */
     private Socket socket;
+    /** Listening port */
     private int port;
+    /** Host of the server */
     private String host;
-    private PrintStream socketOut; // Flux de sortie en clair
-
-    private BufferedReader socketIn; // Flux d'entrée en clair
+    /** Output stream of the client */
+    private PrintStream socketOut;
+    /** Input stream of the client */
+    private BufferedReader socketIn;
+    /** List of pseudo of connected clients */
     private LinkedList<String> pseudosConnected;
+    /** Thread which receives messages */
     private ReceiverThread receive;
     private ConnectionListener conL;
 
+    /**
+     * Constructor
+     * @param cL
+     */
     public Client(ConnectionListener cL){
         pseudosConnected=new LinkedList<>();
         this.conL = cL;
+        // Get the configuration (algorithm and passphrase) to encrypt messages
         try{
             BufferedReader fileReader=new BufferedReader(new FileReader("config/config.txt"));
             String line;
@@ -55,6 +69,12 @@ public class Client implements ConnectionListener{
 
     }
 
+    /**
+     * Method to connect a client, with a pseudo, to a server defined by its port and the host
+     * @param pseudo
+     * @param host
+     * @param port
+     */
     public synchronized void connect(String pseudo,String host,int port){
         if(pseudo=="" || pseudo==null){
             this.pseudo="Anonymous";
@@ -66,11 +86,17 @@ public class Client implements ConnectionListener{
         this.host=host;
 
         try {
+            // Connection to the server
             socket=new Socket(host,port);
+            // Get the input stream of the socket
             socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // Get the output stream of the socket
             socketOut= new PrintStream(socket.getOutputStream());
+            // Send the pseudo encrypted
             socketOut.println(encrypt(pseudo));
+            // Initialize a new thread to handle incoming messages
             receive=new ReceiverThread(this, conL);
+            // Start the new thread
             receive.start();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + host);
@@ -78,14 +104,15 @@ public class Client implements ConnectionListener{
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to:"+ host);
             conL.onConnectionLost("Connection refused");
-            e.printStackTrace();
         }
 
     }
 
 
-
-
+    /**
+     *
+     * @param msg Message reçu.
+     */
     @Override
     public void onReceiveMessage(String msg) {
         conL.onReceiveMessage(msg);
@@ -122,8 +149,6 @@ public class Client implements ConnectionListener{
         }
     }
 
-    public void joinConversation(int id){
-    }
 
     public synchronized boolean isConnected(){
         boolean res= socket!=null && !socket.isClosed() && receive!=null
