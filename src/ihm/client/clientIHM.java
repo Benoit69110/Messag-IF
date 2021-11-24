@@ -134,11 +134,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
                     try {
                         client.connect(pseudoField.getText(), adresseIP.getText(), Integer.valueOf(port.getText()));
                         pseudoField.setEditable(false);
-
                         messageField.requestFocusInWindow();
-
-                        //} catch (IOException ex) {
-                        //write("Error : could not connect to remote host " + adresseIP.getText() + " on port " + Integer.valueOf(adresseIP.getText()));
                     } catch (NumberFormatException ex) {
                         write("Error : you must provide a correct ip address and port...");
                     }
