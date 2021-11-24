@@ -1,12 +1,18 @@
 package back.server;
 
-public class ConnectionThread {
+public class ConnectionThread extends Thread {
     private ServerMultiThreaded server;
-    public ConnectionThread(ServerMultiThreaded server){
-        this.server=server;
+
+    public ConnectionThread(ServerMultiThreaded server) {
+        this.server = server;
     }
 
-    public void acceptConnection(){
+    @Override
+    public void run() {
+        server.acceptClient();
+    }
+
+    public void acceptConnection() {
         server.acceptClient();
     }
 }
