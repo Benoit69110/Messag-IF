@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix pseudoAlreadyUsed">
+    <list default="true" id="8e5cd271-2b3f-4617-ba04-1c7e06274a28" name="Changes" comment="Fix clearHistoric">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/serverLogs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs/serverLogs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/back/server/ServerMultiThreaded.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/server/ServerMultiThreaded.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_old/client/JClientUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_old/multicastclient/JMulticastClientUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ihm/server/ServerIhm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/server/ServerIhm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/client/ClientThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/client/ConnectionListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/client/JClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/multicastclient/ListenerThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/multicastclient/MulticastListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/server/ClientThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/server/ConnectionListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/server/JServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/net_old/server/ListenerThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/back/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/back/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ihm/client/clientIHM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637745955023</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Fix clearHistoric">
+      <created>1637748907781</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1637748907781</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,6 +324,7 @@
     <MESSAGE value="fix privateMessage" />
     <MESSAGE value="boutton update" />
     <MESSAGE value="Fix pseudoAlreadyUsed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix pseudoAlreadyUsed" />
+    <MESSAGE value="Fix clearHistoric" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix clearHistoric" />
   </component>
 </project>
