@@ -135,6 +135,7 @@ public class Client implements ConnectionListener{
         if(socket!=null && isConnected()) {
             socketOut.println(encrypt(message));
         }
+
         //receive=new ReceiverThread(this, conL);
         //receive.start();
         //displayPseudosConnected();

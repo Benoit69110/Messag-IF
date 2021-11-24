@@ -230,7 +230,7 @@ public class clientIHM extends JFrame implements ConnectionListener {
         southPanel.add(pseudoField, BorderLayout.WEST);
 
         // Send Button
-        send = new Button("Send");
+        send = new Button("Send to all");
         send.setPreferredSize(new Dimension(80, 24));
         send.addActionListener(new ActionListener() {
             @Override
