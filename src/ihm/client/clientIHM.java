@@ -198,7 +198,6 @@ public class clientIHM extends JFrame implements ConnectionListener {
                         westPanel.add(listConnectClient.get(i));
                     }
             }
-
         });
         northPanel.add(connect);
 
