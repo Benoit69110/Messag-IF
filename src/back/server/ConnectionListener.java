@@ -2,7 +2,7 @@ package back.server;
 
 /***
  * Listener interface to communicate between the back and the front
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public interface ConnectionListener {
 

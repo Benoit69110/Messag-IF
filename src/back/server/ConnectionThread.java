@@ -1,7 +1,7 @@
 package back.server;
 /***
  * Thread to accept client connexion
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ConnectionThread extends Thread {
     /** Server */

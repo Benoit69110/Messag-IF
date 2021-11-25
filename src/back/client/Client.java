@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 /***
  * Client
  * TCP client which can send and receive messages, thanks to another thread
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class Client implements ConnectionListener{
     /** Passsphrase used to encrypt messages */

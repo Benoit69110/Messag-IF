@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 /***
  * ClientMulticast
  * UDP client which can send and receive messages, thanks to another thread
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ClientMulticast {
     /** Pseudo of the client */

@@ -10,7 +10,7 @@ import java.util.Base64;
 import java.util.LinkedList;
 /***
  * Server TCP
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ServerMultiThreaded implements ConnectionListener{
 	/** Passsphrase used to encrypt messages */

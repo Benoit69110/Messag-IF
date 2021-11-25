@@ -3,7 +3,7 @@ package back.server;
 /***
  * ClientConnectedThread
  * Thread which broadcast the list of pseudos connected
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ClientConnectedThread {
     /** Server */

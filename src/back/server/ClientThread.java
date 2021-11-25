@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 /***
  * ClientThread
  * Thread which manage the conversation of a client
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ClientThread extends Thread {
 	/** Remote socket of the client*/

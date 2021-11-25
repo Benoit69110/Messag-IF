@@ -5,7 +5,7 @@ import java.net.*;
 /***
  * ClientMulticastReceiver
  * UDP thread which can receive messages
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ClientMulticastReceiver extends Thread{
     /** Group of multicast */

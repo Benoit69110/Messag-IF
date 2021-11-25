@@ -1,7 +1,7 @@
 /***
  * clientIHM
  * Date: 24/11/21
- * Authors: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 
 package ihm.client;

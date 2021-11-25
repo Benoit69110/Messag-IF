@@ -9,7 +9,7 @@ import java.net.MulticastSocket;
 /***
  * ClientMulticastSender
  * UDP thread which can send messages
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ClientMulticastSender extends Thread {
     /** Socket of the client*/

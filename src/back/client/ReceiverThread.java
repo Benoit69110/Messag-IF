@@ -6,7 +6,7 @@ import java.io.IOException;
 /***
  * ReceiverThread
  * Thread which handle received messages of a client
- * @author: balgourdin, gdelambert, malami
+ * @author balgourdin, gdelambert, malami
  */
 public class ReceiverThread extends Thread{
     /** Input stream of the client */
